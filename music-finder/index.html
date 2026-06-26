@@ -183,7 +183,7 @@
 <body>
   <header>
     <h1>🎵 Music Software Finder</h1>
-    <p>Find the right program to make, record, and mix music.</p>
+    <p>Find the right Windows program to make, record, and mix music.</p>
   </header>
 
   <div class="wrap">
@@ -210,25 +210,17 @@
 <script>
 const SOFTWARE = [
   {
-    name: "GarageBand",
-    desc: "The friendliest place to start. Record, add instruments, and make a song with built-in lessons. Great first program.",
-    categories: ["Make Music", "Recording", "Beginner"],
-    price: "free",
-    platforms: "Mac, iPhone, iPad",
-    url: "https://www.apple.com/mac/garageband/"
-  },
-  {
     name: "Audacity",
     desc: "Simple, classic tool for recording and editing audio. Perfect for podcasts, voice, or cleaning up recordings.",
     categories: ["Recording", "Editing", "Beginner"],
     price: "free",
-    platforms: "Windows, Mac, Linux",
+    platforms: "Windows",
     url: "https://www.audacityteam.org/"
   },
   {
     name: "Cakewalk by BandLab",
-    desc: "A full-featured studio for Windows, completely free. Record, mix, and master professional-sounding tracks.",
-    categories: ["Make Music", "Recording", "Mixing"],
+    desc: "A great free place to start on Windows. A full studio to record, mix, and master professional-sounding tracks — and it costs nothing.",
+    categories: ["Make Music", "Recording", "Mixing", "Beginner"],
     price: "free",
     platforms: "Windows",
     url: "https://www.bandlab.com/products/cakewalk"
@@ -238,7 +230,7 @@ const SOFTWARE = [
     desc: "Make music right in your web browser or phone — no download needed. Easy loops and instruments to start fast.",
     categories: ["Make Music", "Beginner"],
     price: "free",
-    platforms: "Web, iPhone, Android",
+    platforms: "Windows (in a web browser)",
     url: "https://www.bandlab.com/"
   },
   {
@@ -246,7 +238,7 @@ const SOFTWARE = [
     desc: "Online studio that works on any computer. Great for collaborating and making music together over the internet.",
     categories: ["Make Music", "Recording", "Beginner"],
     price: "freemium",
-    platforms: "Web, iPhone, Android",
+    platforms: "Windows (in a web browser)",
     url: "https://www.soundtrap.com/"
   },
   {
@@ -254,7 +246,7 @@ const SOFTWARE = [
     desc: "Hugely popular for making beats and electronic music. Strong drum and loop tools. Free trial, then one-time purchase.",
     categories: ["Make Music", "Beats", "Mixing"],
     price: "paid",
-    platforms: "Windows, Mac",
+    platforms: "Windows",
     url: "https://www.image-line.com/fl-studio/"
   },
   {
@@ -262,23 +254,15 @@ const SOFTWARE = [
     desc: "A favorite for electronic music and live performance. Loop-based and very hands-on. Free trial available.",
     categories: ["Make Music", "Beats", "Mixing"],
     price: "paid",
-    platforms: "Windows, Mac",
+    platforms: "Windows",
     url: "https://www.ableton.com/en/live/"
-  },
-  {
-    name: "Logic Pro",
-    desc: "Apple's professional studio. A big step up from GarageBand with tons of instruments and effects. One-time price.",
-    categories: ["Make Music", "Recording", "Mixing"],
-    price: "paid",
-    platforms: "Mac",
-    url: "https://www.apple.com/logic-pro/"
   },
   {
     name: "Reaper",
     desc: "Powerful, affordable studio that does almost everything. Generous free trial and a low one-time price.",
     categories: ["Recording", "Mixing", "Editing"],
     price: "paid",
-    platforms: "Windows, Mac, Linux",
+    platforms: "Windows",
     url: "https://www.reaper.fm/"
   },
   {
@@ -286,7 +270,7 @@ const SOFTWARE = [
     desc: "A free version of a respected recording studio. Clean and modern with no time limit.",
     categories: ["Make Music", "Recording", "Mixing"],
     price: "free",
-    platforms: "Windows, Mac",
+    platforms: "Windows",
     url: "https://www.presonus.com/products/studio-one"
   },
   {
@@ -294,7 +278,7 @@ const SOFTWARE = [
     desc: "Write and print sheet music. Hear it played back as you go. Excellent for composers and music students.",
     categories: ["Notation", "Beginner"],
     price: "free",
-    platforms: "Windows, Mac, Linux",
+    platforms: "Windows",
     url: "https://musescore.org/"
   },
   {
@@ -302,7 +286,7 @@ const SOFTWARE = [
     desc: "Beginner-friendly version of the well-known sheet-music writing software. Free to start.",
     categories: ["Notation"],
     price: "freemium",
-    platforms: "Windows, Mac",
+    platforms: "Windows",
     url: "https://www.avid.com/sibelius"
   },
   {
@@ -310,7 +294,7 @@ const SOFTWARE = [
     desc: "Mix and DJ your music collection for free. Beat-match songs and add effects for parties.",
     categories: ["DJ", "Beginner"],
     price: "free",
-    platforms: "Windows, Mac",
+    platforms: "Windows",
     url: "https://serato.com/dj/lite"
   },
   {
@@ -318,7 +302,7 @@ const SOFTWARE = [
     desc: "Popular DJ software that's free for home use. Mix songs, videos, and karaoke easily.",
     categories: ["DJ"],
     price: "freemium",
-    platforms: "Windows, Mac",
+    platforms: "Windows",
     url: "https://www.virtualdj.com/"
   },
   {
@@ -326,7 +310,7 @@ const SOFTWARE = [
     desc: "Split a song into vocals and music in your browser. Handy for karaoke or practicing along.",
     categories: ["Editing"],
     price: "free",
-    platforms: "Web",
+    platforms: "Windows (in a web browser)",
     url: "https://vocalremover.org/"
   },
   {
@@ -334,7 +318,7 @@ const SOFTWARE = [
     desc: "Clean up noisy recordings — remove hum, clicks, and background noise. Affordable entry to pro audio repair.",
     categories: ["Editing", "Mixing"],
     price: "paid",
-    platforms: "Windows, Mac",
+    platforms: "Windows",
     url: "https://www.izotope.com/en/products/rx.html"
   }
 ];
