@@ -3,411 +3,639 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Music Software Finder</title>
+<title>MusicTip — Find the right music software for you</title>
 <style>
   :root {
-    --bg: #f4f6fb;
-    --card: #ffffff;
-    --ink: #1c2433;
-    --muted: #5a6577;
-    --accent: #3b6cf6;
-    --accent-dark: #2a55cf;
-    --free: #1f9d57;
-    --paid: #c2731a;
-    --border: #e2e6ef;
-    --shadow: 0 2px 10px rgba(28, 36, 51, 0.08);
+    --bg: #ffffff;
+    --bg-soft: #f6f8fc;
+    --panel: #ffffff;
+    --ink: #0f1623;
+    --muted: #6b7585;
+    --faint: #9aa3b2;
+    --accent: #2f6bff;
+    --accent-soft: #eaf0ff;
+    --border: #e6eaf1;
+    --chip: #f1f4f9;
+    --star: #f5a623;
+    --shadow: 0 1px 2px rgba(16,22,35,.04), 0 6px 20px rgba(16,22,35,.06);
+    --win: #2f8fdb;
+    --apple: #4a5160;
+  }
+  html.dark {
+    --bg: #0e1320;
+    --bg-soft: #0b101b;
+    --panel: #151c2c;
+    --ink: #eef2f8;
+    --muted: #9aa6b8;
+    --faint: #6b7688;
+    --accent: #5b87ff;
+    --accent-soft: #1b2747;
+    --border: #243047;
+    --chip: #1c2536;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    --win: #4aa3e8;
+    --apple: #c3cad6;
   }
 
   * { box-sizing: border-box; }
-
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background: var(--bg);
     color: var(--ink);
-    font-size: 18px;
-    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
+  a { color: inherit; }
 
-  header {
-    background: linear-gradient(135deg, #3b6cf6, #6a4bf6);
-    color: #fff;
-    padding: 32px 20px 28px;
-    text-align: center;
-  }
-  header h1 {
-    margin: 0 0 6px;
-    font-size: 34px;
-  }
-  header p {
-    margin: 0;
-    font-size: 19px;
-    opacity: 0.95;
-  }
-
-  .wrap {
-    max-width: 1040px;
-    margin: 0 auto;
-    padding: 24px 20px 60px;
-  }
-
-  .search-box {
-    width: 100%;
-    padding: 16px 18px;
-    font-size: 20px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    background: var(--card);
-    box-shadow: var(--shadow);
-    margin-bottom: 8px;
-  }
-  .search-box:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-
-  .section-label {
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    font-weight: 700;
-    margin: 22px 2px 10px;
-  }
-
-  .filters {
+  /* ---------- Top nav ---------- */
+  .nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    max-width: 1240px;
+    margin: 0 auto;
   }
-  .chip {
-    padding: 10px 18px;
-    font-size: 17px;
-    border: 2px solid var(--border);
-    background: var(--card);
-    color: var(--ink);
-    border-radius: 999px;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+  }
+  .brand .dot { color: var(--accent); }
+  .brand svg { width: 26px; height: 26px; color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .nav-links a { text-decoration: none; color: var(--ink); opacity: .9; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .icon-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    display: grid; place-items: center;
     cursor: pointer;
-    transition: all 0.12s ease;
-    user-select: none;
-  }
-  .chip:hover { border-color: var(--accent); }
-  .chip.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-
-  .count {
-    margin: 26px 2px 12px;
-    font-size: 16px;
     color: var(--muted);
   }
+  .icon-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .icon-btn svg { width: 18px; height: 18px; }
 
-  .grid {
+  /* ---------- Hero ---------- */
+  .hero { text-align: center; padding: 40px 20px 8px; }
+  .hero h1 {
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    margin: 0 0 14px;
+  }
+  .hero h1 .grad { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 19px; margin: 0 0 28px; }
+
+  .search-wrap {
+    max-width: 760px; margin: 0 auto;
+    position: relative;
+  }
+  .search-wrap svg.search-ico {
+    position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+    width: 22px; height: 22px; color: var(--faint);
+  }
+  #search {
+    width: 100%;
+    padding: 18px 52px 18px 54px;
+    font-size: 18px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--panel);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+  }
+  #search:focus { outline: none; border-color: var(--accent); }
+  .clear-btn {
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    border: none; background: transparent; cursor: pointer;
+    color: var(--faint); font-size: 22px; line-height: 1; padding: 6px;
+  }
+  .clear-btn:hover { color: var(--ink); }
+
+  .popular {
+    max-width: 760px; margin: 18px auto 0;
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    justify-content: center;
+    font-size: 14px; color: var(--muted);
+  }
+  .popular .lbl { font-weight: 600; }
+  .pill {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--accent);
+    padding: 7px 14px; border-radius: 999px;
+    cursor: pointer; font-size: 14px; font-weight: 600;
+  }
+  .pill:hover { background: var(--accent-soft); }
+
+  /* ---------- Layout ---------- */
+  .container {
+    max-width: 1240px; margin: 36px auto 70px;
+    padding: 0 28px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 18px;
+    grid-template-columns: 250px 1fr;
+    gap: 26px;
+    align-items: start;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 20px;
+    box-shadow: var(--shadow);
+    position: sticky; top: 18px;
+  }
+  .sidebar-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px;
+  }
+  .sidebar-head h2 { font-size: 17px; margin: 0; }
+  .clear-all { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 600; }
+  .clear-all:hover { text-decoration: underline; }
+
+  .fgroup { padding: 18px 0; border-top: 1px solid var(--border); }
+  .fgroup:first-of-type { border-top: none; }
+  .fgroup h3 { font-size: 14px; margin: 0 0 12px; letter-spacing: .01em; }
+  .opt {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--muted);
+    padding: 5px 0; cursor: pointer; user-select: none;
+  }
+  .opt:hover { color: var(--ink); }
+  .opt input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .opt .os-ico { width: 16px; height: 16px; display: inline-grid; place-items: center; }
+  .show-more { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 600; padding: 6px 0 0; }
+  .show-more:hover { text-decoration: underline; }
+
+  .range-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--faint); margin-top: 6px; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .range-val { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .stars-static { color: var(--star); font-size: 14px; letter-spacing: 1px; }
+
+  /* ---------- Results ---------- */
+  .results-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+  .results-head .count { font-size: 15px; color: var(--muted); }
+  .results-head .count b { color: var(--ink); }
+  .sort { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+  .sort select {
+    border: 1px solid var(--border); background: var(--panel); color: var(--ink);
+    border-radius: 8px; padding: 7px 10px; font-size: 14px; cursor: pointer;
   }
 
   .card {
-    background: var(--card);
+    background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 22px;
     box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 16px;
   }
-  .card h3 {
-    margin: 0 0 4px;
-    font-size: 22px;
+  .logo {
+    width: 64px; height: 64px; border-radius: 14px;
+    display: grid; place-items: center; font-size: 30px;
+    border: 1px solid var(--border);
   }
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 4px 0 12px;
+  .mid .title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .mid h3 { margin: 0; font-size: 20px; }
+  .badge {
+    font-size: 12px; font-weight: 700;
+    background: #e4f7ec; color: #1f9d57;
+    padding: 3px 10px; border-radius: 999px;
   }
-  .tag {
-    font-size: 13px;
-    padding: 3px 10px;
-    border-radius: 999px;
-    background: #eef1f8;
-    color: var(--muted);
-    font-weight: 600;
-  }
-  .tag.price-free { background: #e4f6ec; color: var(--free); }
-  .tag.price-paid { background: #fbeede; color: var(--paid); }
+  html.dark .badge { background: #14331f; color: #4ed98a; }
+  .rating { display: flex; align-items: center; gap: 8px; margin: 8px 0 10px; font-size: 14px; }
+  .stars { position: relative; display: inline-block; font-size: 15px; letter-spacing: 1px; line-height: 1; }
+  .stars .bg { color: var(--border); }
+  .stars .fg { color: var(--star); position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; }
+  .rating .score { font-weight: 700; }
+  .rating .reviews { color: var(--faint); }
+  .desc { color: var(--muted); font-size: 14.5px; margin: 0 0 12px; max-width: 52ch; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-size: 12.5px; background: var(--chip); color: var(--muted); padding: 4px 11px; border-radius: 7px; }
 
-  .card p {
-    margin: 0 0 16px;
-    color: var(--muted);
-    font-size: 16px;
-    flex-grow: 1;
+  .right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; min-width: 230px; }
+  .right-inner { display: flex; gap: 22px; align-items: flex-start; }
+  .os-list { display: flex; gap: 8px; padding-top: 4px; }
+  .os-list .os-ico svg { width: 18px; height: 18px; display: block; }
+  .price { font-size: 13px; color: var(--muted); min-width: 120px; }
+  .price .ptype { color: var(--faint); }
+  .price .pfrom { color: var(--ink); font-weight: 600; font-size: 14px; }
+  .price .pfrom small { color: var(--faint); font-weight: 500; }
+  .visit {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #fff; text-decoration: none;
+    padding: 11px 18px; border-radius: 10px; font-size: 14px; font-weight: 600;
+    white-space: nowrap;
   }
-  .card .meta {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-  .btn {
-    display: inline-block;
-    text-align: center;
-    padding: 12px 18px;
-    background: var(--accent);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 10px;
-    font-size: 17px;
-    font-weight: 600;
-    transition: background 0.12s ease;
-  }
-  .btn:hover { background: var(--accent-dark); }
+  .visit:hover { filter: brightness(1.07); }
+  .visit svg { width: 15px; height: 15px; }
+  .compare { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); cursor: pointer; user-select: none; }
+  .compare input { accent-color: var(--accent); }
 
-  .empty {
-    text-align: center;
-    padding: 50px 20px;
-    color: var(--muted);
-    font-size: 19px;
-  }
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 17px; }
 
-  footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 14px;
-    padding: 0 20px 40px;
+  footer { text-align: center; color: var(--faint); font-size: 13px; padding: 0 20px 50px; max-width: 760px; margin: 0 auto; }
+
+  @media (max-width: 900px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 34px; }
+    .card { grid-template-columns: 52px 1fr; }
+    .logo { width: 52px; height: 52px; font-size: 24px; }
+    .right { grid-column: 1 / -1; align-items: stretch; flex-direction: row; justify-content: space-between; flex-wrap: wrap; }
   }
 </style>
 </head>
 <body>
-  <header>
-    <h1>🎵 Music Software Finder</h1>
-    <p>Find the right Windows program to make, record, and mix music.</p>
-  </header>
-
-  <div class="wrap">
-    <input id="search" class="search-box" type="text"
-      placeholder="Search by name, e.g. &quot;recording&quot; or &quot;free&quot;..." autocomplete="off" />
-
-    <div class="section-label">What do you want to do?</div>
-    <div class="filters" id="category-filters"></div>
-
-    <div class="section-label">Price</div>
-    <div class="filters" id="price-filters"></div>
-
-    <div class="count" id="count"></div>
-    <div class="grid" id="results"></div>
-    <div class="empty" id="empty" style="display:none;">
-      No matches. Try a different word or clear the filters.
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path d="M9 5v13M20 3v13" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      <span>Music<span class="dot">Tip</span></span>
     </div>
+    <div class="nav-links">
+      <a href="#">Categories</a>
+      <a href="#">Guides</a>
+      <a href="#">Blog</a>
+      <a href="#">About</a>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn" id="theme-toggle" title="Toggle light / dark">
+        <svg id="theme-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn" title="Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Find the right <span class="grad">music software</span> for you</h1>
+    <p>Search and compare the best music software to create, edit and produce.</p>
+
+    <div class="search-wrap">
+      <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <input id="search" type="text" placeholder="Search for music software..." autocomplete="off" />
+      <button class="clear-btn" id="clear-search" aria-label="Clear search">×</button>
+    </div>
+
+    <div class="popular">
+      <span class="lbl">Popular searches:</span>
+      <span class="pill" data-q="best free daw">best free daw</span>
+      <span class="pill" data-q="vocal plugins">vocal plugins</span>
+      <span class="pill" data-q="mixing software">mixing software</span>
+      <span class="pill" data-q="notation software">notation software</span>
+    </div>
+  </section>
+
+  <!-- BODY -->
+  <div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2>Filter results</h2>
+        <button class="clear-all" id="clear-all">Clear all</button>
+      </div>
+
+      <div class="fgroup">
+        <h3>Category</h3>
+        <div id="category-list"></div>
+        <button class="show-more" id="cat-more">Show more ›</button>
+      </div>
+
+      <div class="fgroup">
+        <h3>Price</h3>
+        <input type="range" id="price-range" min="0" max="1000" step="10" value="1000" />
+        <div class="range-row"><span>$0</span><span>$1000+</span></div>
+        <div class="range-val" id="price-val">Up to $1000+</div>
+        <div style="margin-top:12px">
+          <label class="opt"><input type="checkbox" class="price-type" value="free"> Free</label>
+          <label class="opt"><input type="checkbox" class="price-type" value="paid"> Paid</label>
+          <label class="opt"><input type="checkbox" class="price-type" value="one-time"> One-time purchase</label>
+          <label class="opt"><input type="checkbox" class="price-type" value="subscription"> Subscription</label>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h3>Operating System</h3>
+        <label class="opt"><input type="checkbox" class="os-filter" value="windows"><span class="os-ico" id="ico-win"></span> Windows</label>
+        <label class="opt"><input type="checkbox" class="os-filter" value="mac"><span class="os-ico" id="ico-mac"></span> macOS</label>
+        <label class="opt"><input type="checkbox" class="os-filter" value="linux"><span class="os-ico">🐧</span> Linux</label>
+      </div>
+
+      <div class="fgroup">
+        <h3>User Rating</h3>
+        <label class="opt"><input type="checkbox" id="rating-filter">
+          <span class="stars-static">★★★★½</span> 4.5 &amp; up</label>
+      </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <main>
+      <div class="results-head">
+        <div class="count" id="count"></div>
+        <div class="sort">
+          <span>Sort by:</span>
+          <select id="sort">
+            <option value="relevance">Relevance</option>
+            <option value="rating">Rating (high to low)</option>
+            <option value="name">Name (A–Z)</option>
+            <option value="price">Price (low to high)</option>
+          </select>
+        </div>
+      </div>
+      <div id="results"></div>
+      <div class="empty" id="empty" style="display:none">No software matches your filters. Try clearing some.</div>
+    </main>
   </div>
 
   <footer>
-    Made with care so anyone can find good music software. Prices and links can change over time.
-    <!-- published via GitHub Pages -->
-
+    MusicTip helps you find good music software. Prices and links can change over time;
+    star ratings shown are indicative.
   </footer>
 
 <script>
+/* ---------- OS icons ---------- */
+const ICONS = {
+  windows: '<svg viewBox="0 0 24 24" fill="var(--win)"><path d="M3 5.4 10.4 4.4v7H3zM11.4 4.25 21 3v8.4h-9.6zM3 12.6h7.4v7L3 18.6zM11.4 12.6H21V21l-9.6-1.3z"/></svg>',
+  mac: '<svg viewBox="0 0 24 24" fill="var(--apple)"><path d="M16.4 1.6c.1 1-.3 1.9-.9 2.6-.7.8-1.8 1.4-2.8 1.3-.1-1 .4-1.9.9-2.5.7-.8 1.9-1.3 2.8-1.4zM19.8 17.3c-.5 1.1-.8 1.7-1.4 2.7-.9 1.5-2.2 3.3-3.8 3.3-1.4 0-1.8-.9-3.7-.9s-2.3.9-3.6.9c-1.6 0-2.8-1.6-3.7-3-1.3-2-1.5-6 .3-8.2.9-1.6 2.3-2.6 3.7-2.6 1.5 0 2.4 1 3.6 1 1.2 0 1.9-1 3.6-1 1.2 0 2.6.7 3.5 1.9-3 1.7-2.6 6.1.7 6.9z"/></svg>'
+};
+document.getElementById('ico-win').innerHTML = ICONS.windows;
+document.getElementById('ico-mac').innerHTML = ICONS.mac;
+
+/* ---------- Data ---------- */
+const CATEGORIES = [
+  "DAW Software", "MIDI Sequencers", "Plugins", "Virtual Instruments",
+  "Notation Software", "Mastering Software", "DJ Software", "Audio Editing"
+];
+const VISIBLE_CATS = 6;
+
 const SOFTWARE = [
-  {
-    name: "Audacity",
-    desc: "Simple, classic tool for recording and editing audio. Perfect for podcasts, voice, or cleaning up recordings.",
-    categories: ["Recording", "Editing", "Beginner"],
-    price: "free",
-    platforms: "Windows",
-    url: "https://www.audacityteam.org/"
-  },
-  {
-    name: "Cakewalk by BandLab",
-    desc: "A great free place to start on Windows. A full studio to record, mix, and master professional-sounding tracks — and it costs nothing.",
-    categories: ["Make Music", "Recording", "Mixing", "Beginner"],
-    price: "free",
-    platforms: "Windows",
-    url: "https://www.bandlab.com/products/cakewalk"
-  },
-  {
-    name: "BandLab",
-    desc: "Make music right in your web browser or phone — no download needed. Easy loops and instruments to start fast.",
-    categories: ["Make Music", "Beginner"],
-    price: "free",
-    platforms: "Windows (in a web browser)",
-    url: "https://www.bandlab.com/"
-  },
-  {
-    name: "Soundtrap",
-    desc: "Online studio that works on any computer. Great for collaborating and making music together over the internet.",
-    categories: ["Make Music", "Recording", "Beginner"],
-    price: "freemium",
-    platforms: "Windows (in a web browser)",
-    url: "https://www.soundtrap.com/"
-  },
-  {
-    name: "FL Studio",
-    desc: "Hugely popular for making beats and electronic music. Strong drum and loop tools. Free trial, then one-time purchase.",
-    categories: ["Make Music", "Beats", "Mixing"],
-    price: "paid",
-    platforms: "Windows",
-    url: "https://www.image-line.com/fl-studio/"
-  },
-  {
-    name: "Ableton Live",
-    desc: "A favorite for electronic music and live performance. Loop-based and very hands-on. Free trial available.",
-    categories: ["Make Music", "Beats", "Mixing"],
-    price: "paid",
-    platforms: "Windows",
-    url: "https://www.ableton.com/en/live/"
-  },
-  {
-    name: "Reaper",
-    desc: "Powerful, affordable studio that does almost everything. Generous free trial and a low one-time price.",
-    categories: ["Recording", "Mixing", "Editing"],
-    price: "paid",
-    platforms: "Windows",
-    url: "https://www.reaper.fm/"
-  },
-  {
-    name: "Studio One Prime",
-    desc: "A free version of a respected recording studio. Clean and modern with no time limit.",
-    categories: ["Make Music", "Recording", "Mixing"],
-    price: "free",
-    platforms: "Windows",
-    url: "https://www.presonus.com/products/studio-one"
-  },
-  {
-    name: "MuseScore",
-    desc: "Write and print sheet music. Hear it played back as you go. Excellent for composers and music students.",
-    categories: ["Notation", "Beginner"],
-    price: "free",
-    platforms: "Windows",
-    url: "https://musescore.org/"
-  },
-  {
-    name: "Sibelius First",
-    desc: "Beginner-friendly version of the well-known sheet-music writing software. Free to start.",
-    categories: ["Notation"],
-    price: "freemium",
-    platforms: "Windows",
-    url: "https://www.avid.com/sibelius"
-  },
-  {
-    name: "Serato DJ Lite",
-    desc: "Mix and DJ your music collection for free. Beat-match songs and add effects for parties.",
-    categories: ["DJ", "Beginner"],
-    price: "free",
-    platforms: "Windows",
-    url: "https://serato.com/dj/lite"
-  },
-  {
-    name: "VirtualDJ",
-    desc: "Popular DJ software that's free for home use. Mix songs, videos, and karaoke easily.",
-    categories: ["DJ"],
-    price: "freemium",
-    platforms: "Windows",
-    url: "https://www.virtualdj.com/"
-  },
-  {
-    name: "Vocal Remover (online)",
-    desc: "Split a song into vocals and music in your browser. Handy for karaoke or practicing along.",
-    categories: ["Editing"],
-    price: "free",
-    platforms: "Windows (in a web browser)",
-    url: "https://vocalremover.org/"
-  },
-  {
-    name: "iZotope RX Elements",
-    desc: "Clean up noisy recordings — remove hum, clicks, and background noise. Affordable entry to pro audio repair.",
-    categories: ["Editing", "Mixing"],
-    price: "paid",
-    platforms: "Windows",
-    url: "https://www.izotope.com/en/products/rx.html"
-  }
+  { name:"Pro Tools", logo:"🎚️", bg:"#1d1f2b", color:"#fff", editor:true, rating:4.6, reviews:1342,
+    desc:"Industry-standard DAW used in professional studios for recording, editing, and mixing.",
+    cats:["DAW Software","Mastering Software"], tags:["DAW Software","Audio Recording","Mixing"],
+    os:["windows","mac"], ptype:"subscription", from:29.99, per:"/month", url:"https://www.avid.com/pro-tools" },
+
+  { name:"Ableton Live", logo:"▦", bg:"#111", color:"#fff", rating:4.5, reviews:982,
+    desc:"Powerful DAW designed for music creation, performance, and live production.",
+    cats:["DAW Software","MIDI Sequencers"], tags:["DAW Software","Live Performance","MIDI"],
+    os:["windows","mac"], ptype:"one-time", from:99, url:"https://www.ableton.com/en/live/" },
+
+  { name:"Studio One", logo:"🎼", bg:"#f3f5f9", color:"#2f6bff", rating:4.4, reviews:679,
+    desc:"Intuitive DAW with drag-and-drop workflow and powerful built-in tools.",
+    cats:["DAW Software"], tags:["DAW Software","Recording","Mixing"],
+    os:["windows","mac"], ptype:"one-time", from:99.95, url:"https://www.presonus.com/products/studio-one" },
+
+  { name:"FL Studio", logo:"🍊", bg:"#fff3e6", color:"#e8732a", rating:4.3, reviews:1201,
+    desc:"Popular DAW for beat making, composing, arranging, and production.",
+    cats:["DAW Software","MIDI Sequencers"], tags:["DAW Software","Beat Making","MIDI"],
+    os:["windows","mac"], ptype:"one-time", from:99, url:"https://www.image-line.com/fl-studio/" },
+
+  { name:"Reaper", logo:"🎛️", bg:"#0f2a3c", color:"#7fd4ff", rating:4.7, reviews:864,
+    desc:"Powerful, affordable studio that does almost everything. Generous trial and low one-time price.",
+    cats:["DAW Software","Audio Editing"], tags:["DAW Software","Recording","Editing"],
+    os:["windows","mac","linux"], ptype:"one-time", from:60, url:"https://www.reaper.fm/" },
+
+  { name:"Cakewalk by BandLab", logo:"🎙️", bg:"#101826", color:"#5b87ff", editor:true, rating:4.4, reviews:980,
+    desc:"A full studio for Windows, completely free. Record, mix, and master professional-sounding tracks.",
+    cats:["DAW Software"], tags:["DAW Software","Recording","Free"],
+    os:["windows"], ptype:"free", from:0, url:"https://www.bandlab.com/products/cakewalk" },
+
+  { name:"GarageBand", logo:"🎸", bg:"#fde9d0", color:"#e8732a", rating:4.5, reviews:910,
+    desc:"The friendliest place to start. Record, add instruments, and make a song with built-in lessons.",
+    cats:["DAW Software"], tags:["DAW Software","Beginner","Recording"],
+    os:["mac"], ptype:"free", from:0, url:"https://www.apple.com/mac/garageband/" },
+
+  { name:"Logic Pro", logo:"🎹", bg:"#eef1f6", color:"#444", rating:4.7, reviews:1105,
+    desc:"Apple's professional studio with tons of instruments and effects. A big step up from GarageBand.",
+    cats:["DAW Software","MIDI Sequencers"], tags:["DAW Software","MIDI","Mixing"],
+    os:["mac"], ptype:"one-time", from:199, url:"https://www.apple.com/logic-pro/" },
+
+  { name:"Audacity", logo:"🎧", bg:"#e9f0ff", color:"#2f6bff", rating:4.5, reviews:2140,
+    desc:"Simple, classic tool for recording and editing audio. Perfect for podcasts, voice, or cleanup.",
+    cats:["Audio Editing"], tags:["Audio Editing","Recording","Free"],
+    os:["windows","mac","linux"], ptype:"free", from:0, url:"https://www.audacityteam.org/" },
+
+  { name:"iZotope RX Elements", logo:"🧰", bg:"#101826", color:"#8be0c0", rating:4.4, reviews:226,
+    desc:"Clean up noisy recordings — remove hum, clicks, and background noise. Affordable audio repair.",
+    cats:["Plugins","Mastering Software","Audio Editing"], tags:["Plugins","Editing","Mastering Software"],
+    os:["windows","mac"], ptype:"one-time", from:129, url:"https://www.izotope.com/en/products/rx.html" },
+
+  { name:"MuseScore", logo:"🎵", bg:"#eafaf0", color:"#1f9d57", rating:4.6, reviews:1520,
+    desc:"Write and print sheet music. Hear it played back as you go. Excellent for composers and students.",
+    cats:["Notation Software"], tags:["Notation Software","Free","Beginner"],
+    os:["windows","mac","linux"], ptype:"free", from:0, url:"https://musescore.org/" },
+
+  { name:"Sibelius First", logo:"📝", bg:"#fff0f0", color:"#d05a5a", rating:4.0, reviews:412,
+    desc:"Beginner-friendly version of the well-known sheet-music writing software. Free to start.",
+    cats:["Notation Software"], tags:["Notation Software"],
+    os:["windows","mac"], ptype:"subscription", from:9.99, per:"/month", url:"https://www.avid.com/sibelius" },
+
+  { name:"Serato DJ Lite", logo:"🎚️", bg:"#101826", color:"#6fe3c0", rating:4.2, reviews:305,
+    desc:"Mix and DJ your music collection for free. Beat-match songs and add effects for parties.",
+    cats:["DJ Software"], tags:["DJ Software","Free","Beginner"],
+    os:["windows","mac"], ptype:"free", from:0, url:"https://serato.com/dj/lite" },
+
+  { name:"VirtualDJ", logo:"💿", bg:"#e9f0ff", color:"#2f6bff", rating:4.1, reviews:254,
+    desc:"Popular DJ software that's free for home use. Mix songs, videos, and karaoke easily.",
+    cats:["DJ Software"], tags:["DJ Software","Free"],
+    os:["windows","mac"], ptype:"subscription", from:19, per:"/month", url:"https://www.virtualdj.com/" },
+
+  { name:"Soundtrap", logo:"🌐", bg:"#eef1f6", color:"#2f6bff", rating:4.1, reviews:328,
+    desc:"Online studio that works on any computer. Great for collaborating and making music together.",
+    cats:["DAW Software"], tags:["DAW Software","Online","Beginner"],
+    os:["windows","mac","linux"], ptype:"subscription", from:9.99, per:"/month", url:"https://www.soundtrap.com/" },
+
+  { name:"BandLab", logo:"🎶", bg:"#101826", color:"#ff5b6e", rating:4.2, reviews:540,
+    desc:"Make music right in your web browser or phone — no download needed. Easy loops to start fast.",
+    cats:["DAW Software"], tags:["DAW Software","Online","Free"],
+    os:["windows","mac","linux"], ptype:"free", from:0, url:"https://www.bandlab.com/" }
 ];
 
-const CATEGORIES = ["Make Music", "Recording", "Mixing", "Editing", "Beats", "DJ", "Notation", "Beginner"];
-
-let activeCategory = "All";
-let activePrice = "All";
-
-const PRICE_LABELS = {
-  "free": "Free",
-  "freemium": "Free + Paid",
-  "paid": "Paid"
+/* ---------- State ---------- */
+const state = {
+  q: "", cats: new Set(), ptypes: new Set(), os: new Set(),
+  maxPrice: 1000, minRating: false, sort: "relevance"
 };
 
-function makeChip(label, isActive, onClick) {
-  const el = document.createElement("div");
-  el.className = "chip" + (isActive ? " active" : "");
-  el.textContent = label;
-  el.addEventListener("click", onClick);
-  return el;
-}
-
-function renderFilters() {
-  const catWrap = document.getElementById("category-filters");
-  catWrap.innerHTML = "";
-  catWrap.appendChild(makeChip("All", activeCategory === "All", () => { activeCategory = "All"; update(); }));
-  CATEGORIES.forEach(cat => {
-    catWrap.appendChild(makeChip(cat, activeCategory === cat, () => { activeCategory = cat; update(); }));
-  });
-
-  const priceWrap = document.getElementById("price-filters");
-  priceWrap.innerHTML = "";
-  priceWrap.appendChild(makeChip("All", activePrice === "All", () => { activePrice = "All"; update(); }));
-  [["free", "Free"], ["freemium", "Free + Paid"], ["paid", "Paid"]].forEach(([val, label]) => {
-    priceWrap.appendChild(makeChip(label, activePrice === val, () => { activePrice = val; update(); }));
+/* ---------- Build category filters ---------- */
+const catList = document.getElementById('category-list');
+function renderCategoryFilters() {
+  catList.innerHTML = "";
+  const shown = catMoreOpen ? CATEGORIES : CATEGORIES.slice(0, VISIBLE_CATS);
+  shown.forEach(c => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="checkbox" value="${c}" ${state.cats.has(c)?'checked':''}> ${c}`;
+    label.querySelector('input').addEventListener('change', e => {
+      e.target.checked ? state.cats.add(c) : state.cats.delete(c);
+      update();
+    });
+    catList.appendChild(label);
   });
 }
+let catMoreOpen = false;
+document.getElementById('cat-more').addEventListener('click', (e) => {
+  catMoreOpen = !catMoreOpen;
+  e.target.textContent = catMoreOpen ? 'Show less ‹' : 'Show more ›';
+  renderCategoryFilters();
+});
 
-function priceClass(price) {
-  if (price === "free") return "price-free";
-  if (price === "paid") return "price-paid";
-  return "";
+/* ---------- Stars ---------- */
+function starsHTML(r) {
+  const pct = (r / 5) * 100;
+  return `<span class="stars"><span class="bg">★★★★★</span><span class="fg" style="width:${pct}%">★★★★★</span></span>`;
+}
+function osHTML(list) {
+  return list.map(o => o === 'linux'
+    ? '<span class="os-ico" title="Linux">🐧</span>'
+    : `<span class="os-ico" title="${o}">${ICONS[o]}</span>`).join('');
+}
+function priceLabel(s) {
+  if (s.ptype === 'free') return `<div class="ptype">Free</div><div class="pfrom">$0</div>`;
+  const typeTxt = s.ptype === 'subscription' ? 'Subscription' : 'One-time purchase';
+  const per = s.per ? `<small>${s.per}</small>` : '';
+  return `<div class="ptype">${typeTxt}</div><div class="pfrom">from $${s.from}${per}</div>`;
 }
 
-function renderResults(list) {
-  const grid = document.getElementById("results");
-  const empty = document.getElementById("empty");
-  const count = document.getElementById("count");
-  grid.innerHTML = "";
+/* ---------- Render results ---------- */
+const resultsEl = document.getElementById('results');
+const emptyEl = document.getElementById('empty');
+const countEl = document.getElementById('count');
 
-  count.textContent = list.length + (list.length === 1 ? " program found" : " programs found");
-  empty.style.display = list.length ? "none" : "block";
+const STOPWORDS = new Set(['best','for','the','a','an','to','with','my','of','and','top','good','software','app','apps','program','programs','music']);
+function matches(s) {
+  if (state.q) {
+    const hay = (s.name + ' ' + s.desc + ' ' + s.cats.join(' ') + ' ' + s.tags.join(' ')).toLowerCase();
+    const tokens = state.q.split(/\s+/).filter(t => t && !STOPWORDS.has(t));
+    // If the query is only filler words, fall back to the raw phrase.
+    const terms = tokens.length ? tokens : [state.q];
+    if (!terms.some(t => hay.includes(t))) return false;
+  }
+  if (state.cats.size && !s.cats.some(c => state.cats.has(c))) return false;
+  if (state.os.size && !s.os.some(o => state.os.has(o))) return false;
+  if (state.minRating && s.rating < 4.5) return false;
+  if (s.from > state.maxPrice) return false;
+  if (state.ptypes.size) {
+    const ok = [...state.ptypes].some(p =>
+      p === 'free' ? s.ptype === 'free'
+      : p === 'paid' ? s.ptype !== 'free'
+      : s.ptype === p);
+    if (!ok) return false;
+  }
+  return true;
+}
 
-  list.forEach(s => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const tags = s.categories.map(c => `<span class="tag">${c}</span>`).join("");
-    const priceTag = `<span class="tag ${priceClass(s.price)}">${PRICE_LABELS[s.price]}</span>`;
-
-    card.innerHTML = `
-      <h3>${s.name}</h3>
-      <div class="tags">${priceTag}${tags}</div>
-      <p>${s.desc}</p>
-      <div class="meta">Works on: ${s.platforms}</div>
-      <a class="btn" href="${s.url}" target="_blank" rel="noopener">Visit website →</a>
-    `;
-    grid.appendChild(card);
-  });
+function sortList(list) {
+  const l = [...list];
+  if (state.sort === 'rating') l.sort((a,b) => b.rating - a.rating);
+  else if (state.sort === 'name') l.sort((a,b) => a.name.localeCompare(b.name));
+  else if (state.sort === 'price') l.sort((a,b) => a.from - b.from);
+  return l;
 }
 
 function update() {
-  const q = document.getElementById("search").value.trim().toLowerCase();
-  const filtered = SOFTWARE.filter(s => {
-    const matchCat = activeCategory === "All" || s.categories.includes(activeCategory);
-    const matchPrice = activePrice === "All" || s.price === activePrice ||
-      (activePrice === "free" && s.price === "freemium");
-    const haystack = (s.name + " " + s.desc + " " + s.categories.join(" ") + " " + PRICE_LABELS[s.price]).toLowerCase();
-    const matchSearch = !q || haystack.includes(q);
-    return matchCat && matchPrice && matchSearch;
-  });
-  renderFilters();
-  renderResults(filtered);
+  renderCategoryFilters();
+  const list = sortList(SOFTWARE.filter(matches));
+  countEl.innerHTML = `<b>${list.length}</b> result${list.length===1?'':'s'}` +
+    (state.q ? ` for &ldquo;${state.q}&rdquo;` : '');
+  emptyEl.style.display = list.length ? 'none' : 'block';
+  resultsEl.innerHTML = list.map(s => `
+    <div class="card">
+      <div class="logo" style="background:${s.bg};color:${s.color}">${s.logo}</div>
+      <div class="mid">
+        <div class="title-row">
+          <h3>${s.name}</h3>
+          ${s.editor ? '<span class="badge">Editor&#39;s Choice</span>' : ''}
+        </div>
+        <div class="rating">
+          ${starsHTML(s.rating)}
+          <span class="score">${s.rating.toFixed(1)}</span>
+          <span class="reviews">(${s.reviews.toLocaleString()})</span>
+        </div>
+        <p class="desc">${s.desc}</p>
+        <div class="tags">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+      <div class="right">
+        <div class="right-inner">
+          <div class="os-list">${osHTML(s.os)}</div>
+          <div class="price">${priceLabel(s)}</div>
+          <a class="visit" href="${s.url}" target="_blank" rel="noopener">Visit Website
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+        <label class="compare"><input type="checkbox"> Compare</label>
+      </div>
+    </div>`).join('');
 }
 
-document.getElementById("search").addEventListener("input", update);
+/* ---------- Wire up controls ---------- */
+const searchEl = document.getElementById('search');
+searchEl.addEventListener('input', () => { state.q = searchEl.value.trim().toLowerCase(); update(); });
+document.getElementById('clear-search').addEventListener('click', () => { searchEl.value=''; state.q=''; update(); searchEl.focus(); });
+document.querySelectorAll('.pill').forEach(p => p.addEventListener('click', () => {
+  searchEl.value = p.dataset.q; state.q = p.dataset.q.toLowerCase(); update();
+}));
+
+document.querySelectorAll('.price-type').forEach(cb => cb.addEventListener('change', e => {
+  e.target.checked ? state.ptypes.add(e.target.value) : state.ptypes.delete(e.target.value); update();
+}));
+document.querySelectorAll('.os-filter').forEach(cb => cb.addEventListener('change', e => {
+  e.target.checked ? state.os.add(e.target.value) : state.os.delete(e.target.value); update();
+}));
+document.getElementById('rating-filter').addEventListener('change', e => { state.minRating = e.target.checked; update(); });
+document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; update(); });
+
+const range = document.getElementById('price-range');
+const priceVal = document.getElementById('price-val');
+range.addEventListener('input', () => {
+  state.maxPrice = +range.value;
+  priceVal.textContent = state.maxPrice >= 1000 ? 'Up to $1000+' : 'Up to $' + state.maxPrice;
+  update();
+});
+
+document.getElementById('clear-all').addEventListener('click', () => {
+  state.cats.clear(); state.ptypes.clear(); state.os.clear();
+  state.maxPrice = 1000; state.minRating = false;
+  document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c => c.checked = false);
+  range.value = 1000; priceVal.textContent = 'Up to $1000+';
+  update();
+});
+
+/* ---------- Theme toggle ---------- */
+const root = document.documentElement;
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  root.classList.toggle('dark');
+  const dark = root.classList.contains('dark');
+  document.getElementById('theme-ico').innerHTML = dark
+    ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
+    : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+});
+
 update();
 </script>
 </body>
