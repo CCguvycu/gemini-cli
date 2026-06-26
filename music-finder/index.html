@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Music Software Finder</title>
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --ink: #1c2433;
+    --muted: #5a6577;
+    --accent: #3b6cf6;
+    --accent-dark: #2a55cf;
+    --free: #1f9d57;
+    --paid: #c2731a;
+    --border: #e2e6ef;
+    --shadow: 0 2px 10px rgba(28, 36, 51, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, #3b6cf6, #6a4bf6);
+    color: #fff;
+    padding: 32px 20px 28px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 34px;
+  }
+  header p {
+    margin: 0;
+    font-size: 19px;
+    opacity: 0.95;
+  }
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  .search-box {
+    width: 100%;
+    padding: 16px 18px;
+    font-size: 20px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    margin-bottom: 8px;
+  }
+  .search-box:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .section-label {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    font-weight: 700;
+    margin: 22px 2px 10px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip {
+    padding: 10px 18px;
+    font-size: 17px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    color: var(--ink);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--accent); }
+  .chip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .count {
+    margin: 26px 2px 12px;
+    font-size: 16px;
+    color: var(--muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .card h3 {
+    margin: 0 0 4px;
+    font-size: 22px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 4px 0 12px;
+  }
+  .tag {
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eef1f8;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .tag.price-free { background: #e4f6ec; color: var(--free); }
+  .tag.price-paid { background: #fbeede; color: var(--paid); }
+
+  .card p {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: 16px;
+    flex-grow: 1;
+  }
+  .card .meta {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .btn {
+    display: inline-block;
+    text-align: center;
+    padding: 12px 18px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    transition: background 0.12s ease;
+  }
+  .btn:hover { background: var(--accent-dark); }
+
+  .empty {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--muted);
+    font-size: 19px;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 0 20px 40px;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>🎵 Music Software Finder</h1>
+    <p>Find the right program to make, record, and mix music.</p>
+  </header>
+
+  <div class="wrap">
+    <input id="search" class="search-box" type="text"
+      placeholder="Search by name, e.g. &quot;recording&quot; or &quot;free&quot;..." autocomplete="off" />
+
+    <div class="section-label">What do you want to do?</div>
+    <div class="filters" id="category-filters"></div>
+
+    <div class="section-label">Price</div>
+    <div class="filters" id="price-filters"></div>
+
+    <div class="count" id="count"></div>
+    <div class="grid" id="results"></div>
+    <div class="empty" id="empty" style="display:none;">
+      No matches. Try a different word or clear the filters.
+    </div>
+  </div>
+
+  <footer>
+    Made with care so anyone can find good music software. Prices and links can change over time.
+  </footer>
+
+<script>
+const SOFTWARE = [
+  {
+    name: "GarageBand",
+    desc: "The friendliest place to start. Record, add instruments, and make a song with built-in lessons. Great first program.",
+    categories: ["Make Music", "Recording", "Beginner"],
+    price: "free",
+    platforms: "Mac, iPhone, iPad",
+    url: "https://www.apple.com/mac/garageband/"
+  },
+  {
+    name: "Audacity",
+    desc: "Simple, classic tool for recording and editing audio. Perfect for podcasts, voice, or cleaning up recordings.",
+    categories: ["Recording", "Editing", "Beginner"],
+    price: "free",
+    platforms: "Windows, Mac, Linux",
+    url: "https://www.audacityteam.org/"
+  },
+  {
+    name: "Cakewalk by BandLab",
+    desc: "A full-featured studio for Windows, completely free. Record, mix, and master professional-sounding tracks.",
+    categories: ["Make Music", "Recording", "Mixing"],
+    price: "free",
+    platforms: "Windows",
+    url: "https://www.bandlab.com/products/cakewalk"
+  },
+  {
+    name: "BandLab",
+    desc: "Make music right in your web browser or phone — no download needed. Easy loops and instruments to start fast.",
+    categories: ["Make Music", "Beginner"],
+    price: "free",
+    platforms: "Web, iPhone, Android",
+    url: "https://www.bandlab.com/"
+  },
+  {
+    name: "Soundtrap",
+    desc: "Online studio that works on any computer. Great for collaborating and making music together over the internet.",
+    categories: ["Make Music", "Recording", "Beginner"],
+    price: "freemium",
+    platforms: "Web, iPhone, Android",
+    url: "https://www.soundtrap.com/"
+  },
+  {
+    name: "FL Studio",
+    desc: "Hugely popular for making beats and electronic music. Strong drum and loop tools. Free trial, then one-time purchase.",
+    categories: ["Make Music", "Beats", "Mixing"],
+    price: "paid",
+    platforms: "Windows, Mac",
+    url: "https://www.image-line.com/fl-studio/"
+  },
+  {
+    name: "Ableton Live",
+    desc: "A favorite for electronic music and live performance. Loop-based and very hands-on. Free trial available.",
+    categories: ["Make Music", "Beats", "Mixing"],
+    price: "paid",
+    platforms: "Windows, Mac",
+    url: "https://www.ableton.com/en/live/"
+  },
+  {
+    name: "Logic Pro",
+    desc: "Apple's professional studio. A big step up from GarageBand with tons of instruments and effects. One-time price.",
+    categories: ["Make Music", "Recording", "Mixing"],
+    price: "paid",
+    platforms: "Mac",
+    url: "https://www.apple.com/logic-pro/"
+  },
+  {
+    name: "Reaper",
+    desc: "Powerful, affordable studio that does almost everything. Generous free trial and a low one-time price.",
+    categories: ["Recording", "Mixing", "Editing"],
+    price: "paid",
+    platforms: "Windows, Mac, Linux",
+    url: "https://www.reaper.fm/"
+  },
+  {
+    name: "Studio One Prime",
+    desc: "A free version of a respected recording studio. Clean and modern with no time limit.",
+    categories: ["Make Music", "Recording", "Mixing"],
+    price: "free",
+    platforms: "Windows, Mac",
+    url: "https://www.presonus.com/products/studio-one"
+  },
+  {
+    name: "MuseScore",
+    desc: "Write and print sheet music. Hear it played back as you go. Excellent for composers and music students.",
+    categories: ["Notation", "Beginner"],
+    price: "free",
+    platforms: "Windows, Mac, Linux",
+    url: "https://musescore.org/"
+  },
+  {
+    name: "Sibelius First",
+    desc: "Beginner-friendly version of the well-known sheet-music writing software. Free to start.",
+    categories: ["Notation"],
+    price: "freemium",
+    platforms: "Windows, Mac",
+    url: "https://www.avid.com/sibelius"
+  },
+  {
+    name: "Serato DJ Lite",
+    desc: "Mix and DJ your music collection for free. Beat-match songs and add effects for parties.",
+    categories: ["DJ", "Beginner"],
+    price: "free",
+    platforms: "Windows, Mac",
+    url: "https://serato.com/dj/lite"
+  },
+  {
+    name: "VirtualDJ",
+    desc: "Popular DJ software that's free for home use. Mix songs, videos, and karaoke easily.",
+    categories: ["DJ"],
+    price: "freemium",
+    platforms: "Windows, Mac",
+    url: "https://www.virtualdj.com/"
+  },
+  {
+    name: "Vocal Remover (online)",
+    desc: "Split a song into vocals and music in your browser. Handy for karaoke or practicing along.",
+    categories: ["Editing"],
+    price: "free",
+    platforms: "Web",
+    url: "https://vocalremover.org/"
+  },
+  {
+    name: "iZotope RX Elements",
+    desc: "Clean up noisy recordings — remove hum, clicks, and background noise. Affordable entry to pro audio repair.",
+    categories: ["Editing", "Mixing"],
+    price: "paid",
+    platforms: "Windows, Mac",
+    url: "https://www.izotope.com/en/products/rx.html"
+  }
+];
+
+const CATEGORIES = ["Make Music", "Recording", "Mixing", "Editing", "Beats", "DJ", "Notation", "Beginner"];
+
+let activeCategory = "All";
+let activePrice = "All";
+
+const PRICE_LABELS = {
+  "free": "Free",
+  "freemium": "Free + Paid",
+  "paid": "Paid"
+};
+
+function makeChip(label, isActive, onClick) {
+  const el = document.createElement("div");
+  el.className = "chip" + (isActive ? " active" : "");
+  el.textContent = label;
+  el.addEventListener("click", onClick);
+  return el;
+}
+
+function renderFilters() {
+  const catWrap = document.getElementById("category-filters");
+  catWrap.innerHTML = "";
+  catWrap.appendChild(makeChip("All", activeCategory === "All", () => { activeCategory = "All"; update(); }));
+  CATEGORIES.forEach(cat => {
+    catWrap.appendChild(makeChip(cat, activeCategory === cat, () => { activeCategory = cat; update(); }));
+  });
+
+  const priceWrap = document.getElementById("price-filters");
+  priceWrap.innerHTML = "";
+  priceWrap.appendChild(makeChip("All", activePrice === "All", () => { activePrice = "All"; update(); }));
+  [["free", "Free"], ["freemium", "Free + Paid"], ["paid", "Paid"]].forEach(([val, label]) => {
+    priceWrap.appendChild(makeChip(label, activePrice === val, () => { activePrice = val; update(); }));
+  });
+}
+
+function priceClass(price) {
+  if (price === "free") return "price-free";
+  if (price === "paid") return "price-paid";
+  return "";
+}
+
+function renderResults(list) {
+  const grid = document.getElementById("results");
+  const empty = document.getElementById("empty");
+  const count = document.getElementById("count");
+  grid.innerHTML = "";
+
+  count.textContent = list.length + (list.length === 1 ? " program found" : " programs found");
+  empty.style.display = list.length ? "none" : "block";
+
+  list.forEach(s => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const tags = s.categories.map(c => `<span class="tag">${c}</span>`).join("");
+    const priceTag = `<span class="tag ${priceClass(s.price)}">${PRICE_LABELS[s.price]}</span>`;
+
+    card.innerHTML = `
+      <h3>${s.name}</h3>
+      <div class="tags">${priceTag}${tags}</div>
+      <p>${s.desc}</p>
+      <div class="meta">Works on: ${s.platforms}</div>
+      <a class="btn" href="${s.url}" target="_blank" rel="noopener">Visit website →</a>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function update() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const filtered = SOFTWARE.filter(s => {
+    const matchCat = activeCategory === "All" || s.categories.includes(activeCategory);
+    const matchPrice = activePrice === "All" || s.price === activePrice ||
+      (activePrice === "free" && s.price === "freemium");
+    const haystack = (s.name + " " + s.desc + " " + s.categories.join(" ") + " " + PRICE_LABELS[s.price]).toLowerCase();
+    const matchSearch = !q || haystack.includes(q);
+    return matchCat && matchPrice && matchSearch;
+  });
+  renderFilters();
+  renderResults(filtered);
+}
+
+document.getElementById("search").addEventListener("input", update);
+update();
+</script>
+</body>
+</html>
