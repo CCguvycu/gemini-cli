@@ -6,392 +6,425 @@
 <title>MusicTip — Find the right music software for you</title>
 <style>
   :root {
-    --bg: #ffffff;
-    --bg-soft: #f6f8fc;
-    --panel: #ffffff;
-    --ink: #0f1623;
-    --muted: #6b7585;
-    --faint: #9aa3b2;
-    --accent: #2f6bff;
-    --accent-soft: #eaf0ff;
-    --border: #e6eaf1;
-    --chip: #f1f4f9;
-    --star: #f5a623;
-    --shadow: 0 1px 2px rgba(16,22,35,.04), 0 6px 20px rgba(16,22,35,.06);
-    --win: #2f8fdb;
-    --apple: #4a5160;
+    --bg:#fff; --bg-soft:#f6f8fc; --panel:#fff; --ink:#0f1623; --muted:#6b7585;
+    --faint:#9aa3b2; --accent:#2f6bff; --accent-soft:#eaf0ff; --border:#e6eaf1;
+    --chip:#f1f4f9; --star:#f5a623;
+    --shadow:0 1px 2px rgba(16,22,35,.04),0 6px 20px rgba(16,22,35,.06);
+    --win:#2f8fdb; --apple:#4a5160;
   }
   html.dark {
-    --bg: #0e1320;
-    --bg-soft: #0b101b;
-    --panel: #151c2c;
-    --ink: #eef2f8;
-    --muted: #9aa6b8;
-    --faint: #6b7688;
-    --accent: #5b87ff;
-    --accent-soft: #1b2747;
-    --border: #243047;
-    --chip: #1c2536;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
-    --win: #4aa3e8;
-    --apple: #c3cad6;
+    --bg:#0e1320; --bg-soft:#0b101b; --panel:#151c2c; --ink:#eef2f8; --muted:#9aa6b8;
+    --faint:#6b7688; --accent:#5b87ff; --accent-soft:#1b2747; --border:#243047;
+    --chip:#1c2536; --star:#f5a623;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+    --win:#4aa3e8; --apple:#c3cad6;
   }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; }
+  a { color:inherit; }
+  .hidden { display:none !important; }
 
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; }
+  /* NAV */
+  .nav { display:flex; align-items:center; justify-content:space-between; padding:16px 28px;
+    max-width:1240px; margin:0 auto; position:relative; }
+  .brand { display:flex; align-items:center; gap:8px; font-size:22px; font-weight:800; letter-spacing:-.02em; cursor:pointer; }
+  .brand .dot { color:var(--accent); }
+  .brand svg { width:26px; height:26px; color:var(--accent); }
+  .nav-links { display:flex; gap:30px; font-size:15px; font-weight:600; }
+  .nav-links a { text-decoration:none; color:var(--ink); opacity:.9; cursor:pointer; padding-bottom:2px; border-bottom:2px solid transparent; }
+  .nav-links a:hover, .nav-links a.active { color:var(--accent); border-color:var(--accent); }
+  .nav-right { display:flex; align-items:center; gap:14px; position:relative; }
+  .icon-btn { width:38px; height:38px; border-radius:50%; border:1px solid var(--border);
+    background:var(--panel); display:grid; place-items:center; cursor:pointer; color:var(--muted); }
+  .icon-btn:hover { color:var(--accent); border-color:var(--accent); }
+  .icon-btn svg { width:18px; height:18px; }
 
-  /* ---------- Top nav ---------- */
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 28px;
-    max-width: 1240px;
-    margin: 0 auto;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: -.02em;
-  }
-  .brand .dot { color: var(--accent); }
-  .brand svg { width: 26px; height: 26px; color: var(--accent); }
-  .nav-links {
-    display: flex;
-    gap: 30px;
-    font-size: 15px;
-    font-weight: 600;
-  }
-  .nav-links a { text-decoration: none; color: var(--ink); opacity: .9; }
-  .nav-links a:hover { color: var(--accent); }
-  .nav-right { display: flex; align-items: center; gap: 16px; }
-  .icon-btn {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    display: grid; place-items: center;
-    cursor: pointer;
-    color: var(--muted);
-  }
-  .icon-btn:hover { color: var(--accent); border-color: var(--accent); }
-  .icon-btn svg { width: 18px; height: 18px; }
+  .account-menu { position:absolute; right:0; top:48px; width:230px; background:var(--panel);
+    border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow); padding:10px; z-index:40; }
+  .account-menu .am-head { padding:10px 12px; border-bottom:1px solid var(--border); margin-bottom:6px; }
+  .account-menu .am-head b { display:block; }
+  .account-menu .am-head span { font-size:12.5px; color:var(--faint); }
+  .account-menu button { width:100%; text-align:left; background:none; border:none; color:var(--ink);
+    padding:10px 12px; border-radius:9px; cursor:pointer; font-size:14px; display:flex; gap:10px; align-items:center; }
+  .account-menu button:hover { background:var(--bg-soft); color:var(--accent); }
 
-  /* ---------- Hero ---------- */
-  .hero { text-align: center; padding: 40px 20px 8px; }
-  .hero h1 {
-    font-size: 46px;
-    font-weight: 800;
-    letter-spacing: -.03em;
-    margin: 0 0 14px;
-  }
-  .hero h1 .grad { color: var(--accent); }
-  .hero p { color: var(--muted); font-size: 19px; margin: 0 0 28px; }
+  /* HERO */
+  .hero { text-align:center; padding:40px 20px 8px; }
+  .hero h1 { font-size:46px; font-weight:800; letter-spacing:-.03em; margin:0 0 14px; }
+  .hero h1 .grad { color:var(--accent); }
+  .hero p { color:var(--muted); font-size:19px; margin:0 0 28px; }
+  .search-wrap { max-width:760px; margin:0 auto; position:relative; }
+  .search-wrap svg.search-ico { position:absolute; left:20px; top:50%; transform:translateY(-50%); width:22px; height:22px; color:var(--faint); }
+  #search { width:100%; padding:18px 52px 18px 54px; font-size:18px; border:1px solid var(--border);
+    border-radius:14px; background:var(--panel); color:var(--ink); box-shadow:var(--shadow); }
+  #search:focus { outline:none; border-color:var(--accent); }
+  .clear-btn { position:absolute; right:16px; top:50%; transform:translateY(-50%); border:none; background:transparent;
+    cursor:pointer; color:var(--faint); font-size:22px; line-height:1; padding:6px; }
+  .clear-btn:hover { color:var(--ink); }
+  .popular { max-width:760px; margin:18px auto 0; display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    justify-content:center; font-size:14px; color:var(--muted); }
+  .popular .lbl { font-weight:600; }
+  .pill { border:1px solid var(--border); background:var(--panel); color:var(--accent); padding:7px 14px;
+    border-radius:999px; cursor:pointer; font-size:14px; font-weight:600; }
+  .pill:hover { background:var(--accent-soft); }
 
-  .search-wrap {
-    max-width: 760px; margin: 0 auto;
-    position: relative;
-  }
-  .search-wrap svg.search-ico {
-    position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
-    width: 22px; height: 22px; color: var(--faint);
-  }
-  #search {
-    width: 100%;
-    padding: 18px 52px 18px 54px;
-    font-size: 18px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--panel);
-    color: var(--ink);
-    box-shadow: var(--shadow);
-  }
-  #search:focus { outline: none; border-color: var(--accent); }
-  .clear-btn {
-    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
-    border: none; background: transparent; cursor: pointer;
-    color: var(--faint); font-size: 22px; line-height: 1; padding: 6px;
-  }
-  .clear-btn:hover { color: var(--ink); }
+  /* LAYOUT */
+  .container { max-width:1240px; margin:36px auto 70px; padding:0 28px; display:grid;
+    grid-template-columns:250px 1fr; gap:26px; align-items:start; }
+  .page { max-width:1000px; margin:14px auto 80px; padding:0 28px; }
+  .page h1.page-title { font-size:34px; letter-spacing:-.02em; margin:14px 0 6px; }
+  .page .lead { color:var(--muted); font-size:18px; margin:0 0 28px; }
+  .breadcrumb { font-size:13px; color:var(--faint); margin:18px 0 4px; }
+  .breadcrumb a { color:var(--accent); cursor:pointer; text-decoration:none; }
+  .breadcrumb a:hover { text-decoration:underline; }
 
-  .popular {
-    max-width: 760px; margin: 18px auto 0;
-    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-    justify-content: center;
-    font-size: 14px; color: var(--muted);
-  }
-  .popular .lbl { font-weight: 600; }
-  .pill {
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--accent);
-    padding: 7px 14px; border-radius: 999px;
-    cursor: pointer; font-size: 14px; font-weight: 600;
-  }
-  .pill:hover { background: var(--accent-soft); }
+  /* SIDEBAR */
+  .sidebar { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:22px 20px;
+    box-shadow:var(--shadow); position:sticky; top:18px; }
+  .sidebar-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .sidebar-head h2 { font-size:17px; margin:0; }
+  .clear-all { background:none; border:none; color:var(--accent); cursor:pointer; font-size:13px; font-weight:600; }
+  .clear-all:hover { text-decoration:underline; }
+  .fgroup { padding:18px 0; border-top:1px solid var(--border); }
+  .fgroup:first-of-type { border-top:none; }
+  .fgroup h3 { font-size:14px; margin:0 0 12px; }
+  .opt { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted); padding:5px 0; cursor:pointer; user-select:none; }
+  .opt:hover { color:var(--ink); }
+  .opt input { width:16px; height:16px; accent-color:var(--accent); cursor:pointer; }
+  .opt .os-ico { width:16px; height:16px; display:inline-grid; place-items:center; }
+  .show-more { background:none; border:none; color:var(--accent); cursor:pointer; font-size:13px; font-weight:600; padding:6px 0 0; }
+  .show-more:hover { text-decoration:underline; }
+  .range-row { display:flex; justify-content:space-between; font-size:12px; color:var(--faint); margin-top:6px; }
+  input[type=range] { width:100%; accent-color:var(--accent); }
+  .range-val { font-size:13px; color:var(--muted); margin-top:4px; }
+  .stars-static { color:var(--star); font-size:14px; letter-spacing:1px; }
 
-  /* ---------- Layout ---------- */
-  .container {
-    max-width: 1240px; margin: 36px auto 70px;
-    padding: 0 28px;
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 26px;
-    align-items: start;
-  }
+  /* RESULTS */
+  .results-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .results-head .count { font-size:15px; color:var(--muted); }
+  .results-head .count b { color:var(--ink); }
+  .sort { display:flex; align-items:center; gap:8px; font-size:14px; color:var(--muted); }
+  .sort select { border:1px solid var(--border); background:var(--panel); color:var(--ink); border-radius:8px;
+    padding:7px 10px; font-size:14px; cursor:pointer; }
 
-  /* ---------- Sidebar ---------- */
-  .sidebar {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px 20px;
-    box-shadow: var(--shadow);
-    position: sticky; top: 18px;
-  }
-  .sidebar-head {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 6px;
-  }
-  .sidebar-head h2 { font-size: 17px; margin: 0; }
-  .clear-all { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 600; }
-  .clear-all:hover { text-decoration: underline; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:22px;
+    box-shadow:var(--shadow); display:grid; grid-template-columns:64px 1fr auto; gap:20px; align-items:start; margin-bottom:16px; }
+  .logo { width:64px; height:64px; border-radius:14px; display:grid; place-items:center; font-size:30px; border:1px solid var(--border); }
+  .mid .title-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .mid h3 { margin:0; font-size:20px; }
+  .badge { font-size:12px; font-weight:700; background:#e4f7ec; color:#1f9d57; padding:3px 10px; border-radius:999px; }
+  html.dark .badge { background:#14331f; color:#4ed98a; }
+  .rating { display:flex; align-items:center; gap:8px; margin:8px 0 10px; font-size:14px; }
+  .stars { position:relative; display:inline-block; font-size:15px; letter-spacing:1px; line-height:1; }
+  .stars .bg { color:var(--border); }
+  .stars .fg { color:var(--star); position:absolute; left:0; top:0; overflow:hidden; white-space:nowrap; }
+  .rating .score { font-weight:700; }
+  .rating .reviews { color:var(--faint); }
+  .desc { color:var(--muted); font-size:14.5px; margin:0 0 12px; max-width:52ch; }
+  .tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .tag { font-size:12.5px; background:var(--chip); color:var(--muted); padding:4px 11px; border-radius:7px; cursor:pointer; }
+  .tag:hover { color:var(--accent); }
+  .right { display:flex; flex-direction:column; align-items:flex-end; gap:12px; min-width:230px; }
+  .right-inner { display:flex; gap:22px; align-items:flex-start; }
+  .os-list { display:flex; gap:8px; padding-top:4px; }
+  .os-list .os-ico svg { width:18px; height:18px; display:block; }
+  .price { font-size:13px; color:var(--muted); min-width:120px; }
+  .price .ptype { color:var(--faint); }
+  .price .pfrom { color:var(--ink); font-weight:600; font-size:14px; }
+  .price .pfrom small { color:var(--faint); font-weight:500; }
+  .visit { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#fff; text-decoration:none;
+    padding:11px 18px; border-radius:10px; font-size:14px; font-weight:600; white-space:nowrap; }
+  .visit:hover { filter:brightness(1.07); }
+  .visit svg { width:15px; height:15px; }
+  .compare { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--muted); cursor:pointer; user-select:none; }
+  .compare input { accent-color:var(--accent); }
+  .empty { text-align:center; color:var(--muted); padding:60px 20px; font-size:17px; }
 
-  .fgroup { padding: 18px 0; border-top: 1px solid var(--border); }
-  .fgroup:first-of-type { border-top: none; }
-  .fgroup h3 { font-size: 14px; margin: 0 0 12px; letter-spacing: .01em; }
-  .opt {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 14px; color: var(--muted);
-    padding: 5px 0; cursor: pointer; user-select: none;
-  }
-  .opt:hover { color: var(--ink); }
-  .opt input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
-  .opt .os-ico { width: 16px; height: 16px; display: inline-grid; place-items: center; }
-  .show-more { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 600; padding: 6px 0 0; }
-  .show-more:hover { text-decoration: underline; }
+  /* CATEGORY GRID */
+  .cat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:18px; }
+  .cat-card { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:22px; cursor:pointer;
+    box-shadow:var(--shadow); transition:transform .1s ease, border-color .1s ease; }
+  .cat-card:hover { transform:translateY(-2px); border-color:var(--accent); }
+  .cat-card .emoji { font-size:30px; }
+  .cat-card h3 { margin:12px 0 4px; font-size:18px; }
+  .cat-card p { margin:0; color:var(--muted); font-size:13.5px; }
+  .cat-card .n { margin-top:12px; font-size:13px; color:var(--accent); font-weight:600; }
 
-  .range-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--faint); margin-top: 6px; }
-  input[type=range] { width: 100%; accent-color: var(--accent); }
-  .range-val { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  /* ARTICLE LISTS */
+  .post-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; }
+  .post-card { background:var(--panel); border:1px solid var(--border); border-radius:16px; overflow:hidden;
+    cursor:pointer; box-shadow:var(--shadow); display:flex; flex-direction:column; transition:transform .1s ease; }
+  .post-card:hover { transform:translateY(-2px); }
+  .post-card .banner { font-size:42px; padding:28px; background:var(--bg-soft); text-align:center; }
+  .post-card .body { padding:18px 20px 22px; }
+  .post-card .meta { font-size:12.5px; color:var(--faint); text-transform:uppercase; letter-spacing:.04em; }
+  .post-card h3 { margin:8px 0 8px; font-size:18px; }
+  .post-card p { margin:0; color:var(--muted); font-size:14px; }
 
-  .stars-static { color: var(--star); font-size: 14px; letter-spacing: 1px; }
+  .article { max-width:720px; margin:0 auto; }
+  .article .banner { font-size:60px; text-align:center; margin:6px 0 18px; }
+  .article h1 { font-size:32px; letter-spacing:-.02em; margin:0 0 8px; }
+  .article .meta { color:var(--faint); font-size:14px; margin-bottom:24px; }
+  .article h2 { font-size:21px; margin:30px 0 10px; }
+  .article p { color:var(--ink); font-size:16.5px; line-height:1.7; margin:0 0 16px; }
+  .article ul { color:var(--ink); font-size:16.5px; line-height:1.7; padding-left:22px; }
+  .article li { margin-bottom:8px; }
+  .article .callout { background:var(--accent-soft); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:22px 0; font-size:15px; }
 
-  /* ---------- Results ---------- */
-  .results-head {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px;
-  }
-  .results-head .count { font-size: 15px; color: var(--muted); }
-  .results-head .count b { color: var(--ink); }
-  .sort { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
-  .sort select {
-    border: 1px solid var(--border); background: var(--panel); color: var(--ink);
-    border-radius: 8px; padding: 7px 10px; font-size: 14px; cursor: pointer;
-  }
+  /* ABOUT */
+  .about-card { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:26px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .about-card h2 { margin:0 0 10px; font-size:20px; }
+  .about-card p { color:var(--muted); font-size:15.5px; line-height:1.65; margin:0 0 10px; }
+  .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:8px 0 26px; }
+  .stat { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:20px; text-align:center; box-shadow:var(--shadow); }
+  .stat b { display:block; font-size:30px; color:var(--accent); }
+  .stat span { color:var(--muted); font-size:14px; }
 
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: var(--shadow);
-    display: grid;
-    grid-template-columns: 64px 1fr auto;
-    gap: 20px;
-    align-items: start;
-    margin-bottom: 16px;
-  }
-  .logo {
-    width: 64px; height: 64px; border-radius: 14px;
-    display: grid; place-items: center; font-size: 30px;
-    border: 1px solid var(--border);
-  }
-  .mid .title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .mid h3 { margin: 0; font-size: 20px; }
-  .badge {
-    font-size: 12px; font-weight: 700;
-    background: #e4f7ec; color: #1f9d57;
-    padding: 3px 10px; border-radius: 999px;
-  }
-  html.dark .badge { background: #14331f; color: #4ed98a; }
-  .rating { display: flex; align-items: center; gap: 8px; margin: 8px 0 10px; font-size: 14px; }
-  .stars { position: relative; display: inline-block; font-size: 15px; letter-spacing: 1px; line-height: 1; }
-  .stars .bg { color: var(--border); }
-  .stars .fg { color: var(--star); position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; }
-  .rating .score { font-weight: 700; }
-  .rating .reviews { color: var(--faint); }
-  .desc { color: var(--muted); font-size: 14.5px; margin: 0 0 12px; max-width: 52ch; }
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tag { font-size: 12.5px; background: var(--chip); color: var(--muted); padding: 4px 11px; border-radius: 7px; }
+  /* COMPARE */
+  .compare-bar { position:fixed; left:0; right:0; bottom:0; background:var(--panel); border-top:1px solid var(--border);
+    box-shadow:0 -6px 20px rgba(16,22,35,.08); padding:14px 28px; z-index:50; display:flex; align-items:center; justify-content:space-between; }
+  .compare-bar .cb-items { display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:14px; }
+  .cb-chip { background:var(--chip); border-radius:999px; padding:6px 12px; display:flex; gap:8px; align-items:center; }
+  .cb-chip button { border:none; background:none; cursor:pointer; color:var(--faint); font-size:15px; }
+  .cb-actions { display:flex; gap:12px; align-items:center; }
+  .btn-primary { background:var(--accent); color:#fff; border:none; border-radius:10px; padding:11px 20px; font-size:14px; font-weight:600; cursor:pointer; }
+  .btn-ghost { background:none; border:1px solid var(--border); color:var(--muted); border-radius:10px; padding:11px 16px; font-size:14px; cursor:pointer; }
+  .cmp-table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .cmp-table th, .cmp-table td { padding:16px; border-bottom:1px solid var(--border); text-align:left; font-size:14px; vertical-align:top; }
+  .cmp-table th { background:var(--bg-soft); }
+  .cmp-table tr td:first-child, .cmp-table tr th:first-child { font-weight:600; color:var(--muted); width:160px; }
+  .cmp-head { display:flex; align-items:center; gap:10px; }
+  .cmp-head .logo-sm { width:34px; height:34px; border-radius:9px; display:grid; place-items:center; font-size:18px; border:1px solid var(--border); }
 
-  .right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; min-width: 230px; }
-  .right-inner { display: flex; gap: 22px; align-items: flex-start; }
-  .os-list { display: flex; gap: 8px; padding-top: 4px; }
-  .os-list .os-ico svg { width: 18px; height: 18px; display: block; }
-  .price { font-size: 13px; color: var(--muted); min-width: 120px; }
-  .price .ptype { color: var(--faint); }
-  .price .pfrom { color: var(--ink); font-weight: 600; font-size: 14px; }
-  .price .pfrom small { color: var(--faint); font-weight: 500; }
-  .visit {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--accent); color: #fff; text-decoration: none;
-    padding: 11px 18px; border-radius: 10px; font-size: 14px; font-weight: 600;
-    white-space: nowrap;
-  }
-  .visit:hover { filter: brightness(1.07); }
-  .visit svg { width: 15px; height: 15px; }
-  .compare { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); cursor: pointer; user-select: none; }
-  .compare input { accent-color: var(--accent); }
+  footer { border-top:1px solid var(--border); margin-top:20px; }
+  .foot-inner { max-width:1240px; margin:0 auto; padding:30px 28px 90px; display:flex; flex-wrap:wrap; gap:20px;
+    justify-content:space-between; align-items:center; color:var(--faint); font-size:13px; }
+  .foot-links { display:flex; gap:20px; }
+  .foot-links a { cursor:pointer; text-decoration:none; color:var(--muted); }
+  .foot-links a:hover { color:var(--accent); }
 
-  .empty { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 17px; }
-
-  footer { text-align: center; color: var(--faint); font-size: 13px; padding: 0 20px 50px; max-width: 760px; margin: 0 auto; }
-
-  @media (max-width: 900px) {
-    .container { grid-template-columns: 1fr; }
-    .sidebar { position: static; }
-    .nav-links { display: none; }
-    .hero h1 { font-size: 34px; }
-    .card { grid-template-columns: 52px 1fr; }
-    .logo { width: 52px; height: 52px; font-size: 24px; }
-    .right { grid-column: 1 / -1; align-items: stretch; flex-direction: row; justify-content: space-between; flex-wrap: wrap; }
+  @media (max-width:900px) {
+    .container { grid-template-columns:1fr; }
+    .sidebar { position:static; }
+    .nav-links { display:none; }
+    .hero h1 { font-size:34px; }
+    .card { grid-template-columns:52px 1fr; }
+    .logo { width:52px; height:52px; font-size:24px; }
+    .right { grid-column:1 / -1; align-items:stretch; flex-direction:row; justify-content:space-between; flex-wrap:wrap; }
+    .stat-row { grid-template-columns:1fr; }
   }
 </style>
 </head>
 <body>
   <!-- NAV -->
   <nav class="nav">
-    <div class="brand">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path d="M9 5v13M20 3v13" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+    <div class="brand" data-route="#/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
       <span>Music<span class="dot">Tip</span></span>
     </div>
     <div class="nav-links">
-      <a href="#">Categories</a>
-      <a href="#">Guides</a>
-      <a href="#">Blog</a>
-      <a href="#">About</a>
+      <a data-route="#/categories">Categories</a>
+      <a data-route="#/guides">Guides</a>
+      <a data-route="#/blog">Blog</a>
+      <a data-route="#/about">About</a>
     </div>
     <div class="nav-right">
       <button class="icon-btn" id="theme-toggle" title="Toggle light / dark">
         <svg id="theme-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
-      <button class="icon-btn" title="Account">
+      <button class="icon-btn" id="account-btn" title="Account">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
       </button>
+      <div class="account-menu hidden" id="account-menu">
+        <div class="am-head"><b>Guest</b><span>Demo account</span></div>
+        <button data-route="#/compare">⭐ Saved / Compare</button>
+        <button id="am-clear-theme">🌗 Toggle theme</button>
+        <button data-route="#/about">ℹ️ About MusicTip</button>
+      </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h1>Find the right <span class="grad">music software</span> for you</h1>
-    <p>Search and compare the best music software to create, edit and produce.</p>
-
-    <div class="search-wrap">
-      <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-      <input id="search" type="text" placeholder="Search for music software..." autocomplete="off" />
-      <button class="clear-btn" id="clear-search" aria-label="Clear search">×</button>
-    </div>
-
-    <div class="popular">
-      <span class="lbl">Popular searches:</span>
-      <span class="pill" data-q="best free daw">best free daw</span>
-      <span class="pill" data-q="vocal plugins">vocal plugins</span>
-      <span class="pill" data-q="mixing software">mixing software</span>
-      <span class="pill" data-q="notation software">notation software</span>
-    </div>
-  </section>
-
-  <!-- BODY -->
-  <div class="container">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-head">
-        <h2>Filter results</h2>
-        <button class="clear-all" id="clear-all">Clear all</button>
-      </div>
-
-      <div class="fgroup">
-        <h3>Category</h3>
-        <div id="category-list"></div>
-        <button class="show-more" id="cat-more">Show more ›</button>
-      </div>
-
-      <div class="fgroup">
-        <h3>Price</h3>
-        <input type="range" id="price-range" min="0" max="1000" step="10" value="1000" />
-        <div class="range-row"><span>$0</span><span>$1000+</span></div>
-        <div class="range-val" id="price-val">Up to $1000+</div>
-        <div style="margin-top:12px">
-          <label class="opt"><input type="checkbox" class="price-type" value="free"> Free</label>
-          <label class="opt"><input type="checkbox" class="price-type" value="paid"> Paid</label>
-          <label class="opt"><input type="checkbox" class="price-type" value="one-time"> One-time purchase</label>
-          <label class="opt"><input type="checkbox" class="price-type" value="subscription"> Subscription</label>
+  <main id="app">
+    <!-- HOME -->
+    <section id="view-home">
+      <div class="hero">
+        <h1>Find the right <span class="grad">music software</span> for you</h1>
+        <p>Search and compare the best music software to create, edit and produce.</p>
+        <div class="search-wrap">
+          <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input id="search" type="text" placeholder="Search for music software..." autocomplete="off" />
+          <button class="clear-btn" id="clear-search" aria-label="Clear search">×</button>
+        </div>
+        <div class="popular">
+          <span class="lbl">Popular searches:</span>
+          <span class="pill" data-q="best free daw">best free daw</span>
+          <span class="pill" data-q="vocal plugins">vocal plugins</span>
+          <span class="pill" data-q="mixing software">mixing software</span>
+          <span class="pill" data-q="notation software">notation software</span>
         </div>
       </div>
 
-      <div class="fgroup">
-        <h3>Operating System</h3>
-        <label class="opt"><input type="checkbox" class="os-filter" value="windows"><span class="os-ico" id="ico-win"></span> Windows</label>
-        <label class="opt"><input type="checkbox" class="os-filter" value="mac"><span class="os-ico" id="ico-mac"></span> macOS</label>
-        <label class="opt"><input type="checkbox" class="os-filter" value="linux"><span class="os-ico">🐧</span> Linux</label>
-      </div>
-
-      <div class="fgroup">
-        <h3>User Rating</h3>
-        <label class="opt"><input type="checkbox" id="rating-filter">
-          <span class="stars-static">★★★★½</span> 4.5 &amp; up</label>
-      </div>
-    </aside>
-
-    <!-- RESULTS -->
-    <main>
-      <div class="results-head">
-        <div class="count" id="count"></div>
-        <div class="sort">
-          <span>Sort by:</span>
-          <select id="sort">
-            <option value="relevance">Relevance</option>
-            <option value="rating">Rating (high to low)</option>
-            <option value="name">Name (A–Z)</option>
-            <option value="price">Price (low to high)</option>
-          </select>
+      <div class="container">
+        <aside class="sidebar">
+          <div class="sidebar-head">
+            <h2>Filter results</h2>
+            <button class="clear-all" id="clear-all">Clear all</button>
+          </div>
+          <div class="fgroup">
+            <h3>Category</h3>
+            <div id="category-list"></div>
+            <button class="show-more" id="cat-more">Show more ›</button>
+          </div>
+          <div class="fgroup">
+            <h3>Price</h3>
+            <input type="range" id="price-range" min="0" max="1000" step="10" value="1000" />
+            <div class="range-row"><span>$0</span><span>$1000+</span></div>
+            <div class="range-val" id="price-val">Up to $1000+</div>
+            <div style="margin-top:12px">
+              <label class="opt"><input type="checkbox" class="price-type" value="free"> Free</label>
+              <label class="opt"><input type="checkbox" class="price-type" value="paid"> Paid</label>
+              <label class="opt"><input type="checkbox" class="price-type" value="one-time"> One-time purchase</label>
+              <label class="opt"><input type="checkbox" class="price-type" value="subscription"> Subscription</label>
+            </div>
+          </div>
+          <div class="fgroup">
+            <h3>Operating System</h3>
+            <label class="opt"><input type="checkbox" class="os-filter" value="windows"><span class="os-ico" id="ico-win"></span> Windows</label>
+            <label class="opt"><input type="checkbox" class="os-filter" value="mac"><span class="os-ico" id="ico-mac"></span> macOS</label>
+            <label class="opt"><input type="checkbox" class="os-filter" value="linux"><span class="os-ico">🐧</span> Linux</label>
+          </div>
+          <div class="fgroup">
+            <h3>User Rating</h3>
+            <label class="opt"><input type="checkbox" id="rating-filter"><span class="stars-static">★★★★½</span> 4.5 &amp; up</label>
+          </div>
+        </aside>
+        <div>
+          <div class="results-head">
+            <div class="count" id="count"></div>
+            <div class="sort">
+              <span>Sort by:</span>
+              <select id="sort">
+                <option value="relevance">Relevance</option>
+                <option value="rating">Rating (high to low)</option>
+                <option value="name">Name (A–Z)</option>
+                <option value="price">Price (low to high)</option>
+              </select>
+            </div>
+          </div>
+          <div id="results"></div>
+          <div class="empty" id="empty" style="display:none">No software matches your filters. Try clearing some.</div>
         </div>
       </div>
-      <div id="results"></div>
-      <div class="empty" id="empty" style="display:none">No software matches your filters. Try clearing some.</div>
-    </main>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="view-categories" class="page hidden">
+      <h1 class="page-title">Browse by category</h1>
+      <p class="lead">Pick what you want to do and we'll show the software that fits.</p>
+      <div class="cat-grid" id="cat-grid"></div>
+    </section>
+
+    <!-- GUIDES LIST -->
+    <section id="view-guides" class="page hidden">
+      <h1 class="page-title">Guides</h1>
+      <p class="lead">Plain-English help for choosing and starting with music software.</p>
+      <div class="post-grid" id="guides-grid"></div>
+    </section>
+
+    <!-- GUIDE DETAIL -->
+    <section id="view-guide" class="page hidden">
+      <div class="breadcrumb"><a data-route="#/guides">Guides</a> › <span id="guide-crumb"></span></div>
+      <article class="article" id="guide-article"></article>
+    </section>
+
+    <!-- BLOG LIST -->
+    <section id="view-blog" class="page hidden">
+      <h1 class="page-title">Blog</h1>
+      <p class="lead">Tips, picks, and short reads about making music on a computer.</p>
+      <div class="post-grid" id="blog-grid"></div>
+    </section>
+
+    <!-- BLOG DETAIL -->
+    <section id="view-post" class="page hidden">
+      <div class="breadcrumb"><a data-route="#/blog">Blog</a> › <span id="post-crumb"></span></div>
+      <article class="article" id="post-article"></article>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="view-about" class="page hidden">
+      <h1 class="page-title">About MusicTip</h1>
+      <p class="lead">A simple, friendly way to find music software — built so anyone can use it.</p>
+      <div class="stat-row">
+        <div class="stat"><b id="stat-count">0</b><span>programs listed</span></div>
+        <div class="stat"><b id="stat-free">0</b><span>free options</span></div>
+        <div class="stat"><b>8</b><span>categories</span></div>
+      </div>
+      <div class="about-card">
+        <h2>What this is</h2>
+        <p>MusicTip helps you find the right program to make, record, edit, and mix music — without needing to know any jargon. Search by what you want to do, filter by price or operating system, and compare your options side by side.</p>
+      </div>
+      <div class="about-card">
+        <h2>How to use it</h2>
+        <p>Start on the home page, type what you're after (or click a popular search), then narrow things down with the filters on the left. Tick "Compare" on a few programs to see them side by side. Every "Visit Website" button takes you to the software maker's official site.</p>
+      </div>
+      <div class="about-card">
+        <h2>A note on honesty</h2>
+        <p>Prices and links change over time, so always double-check on the official site before buying. The star ratings shown here are indicative, to help you compare at a glance — they're not pulled from a live review database.</p>
+      </div>
+    </section>
+
+    <!-- COMPARE -->
+    <section id="view-compare" class="page hidden">
+      <h1 class="page-title">Compare software</h1>
+      <p class="lead">A side-by-side look at the programs you picked.</p>
+      <div id="compare-content"></div>
+    </section>
+  </main>
+
+  <!-- COMPARE BAR -->
+  <div class="compare-bar hidden" id="compare-bar">
+    <div class="cb-items" id="cb-items"></div>
+    <div class="cb-actions">
+      <button class="btn-ghost" id="cb-clear">Clear</button>
+      <button class="btn-primary" id="cb-go">Compare</button>
+    </div>
   </div>
 
   <footer>
-    MusicTip helps you find good music software. Prices and links can change over time;
-    star ratings shown are indicative.
+    <div class="foot-inner">
+      <div>© MusicTip — a friendly music-software finder.</div>
+      <div class="foot-links">
+        <a data-route="#/categories">Categories</a>
+        <a data-route="#/guides">Guides</a>
+        <a data-route="#/blog">Blog</a>
+        <a data-route="#/about">About</a>
+      </div>
+    </div>
   </footer>
 
 <script>
 /* ---------- OS icons ---------- */
 const ICONS = {
-  windows: '<svg viewBox="0 0 24 24" fill="var(--win)"><path d="M3 5.4 10.4 4.4v7H3zM11.4 4.25 21 3v8.4h-9.6zM3 12.6h7.4v7L3 18.6zM11.4 12.6H21V21l-9.6-1.3z"/></svg>',
-  mac: '<svg viewBox="0 0 24 24" fill="var(--apple)"><path d="M16.4 1.6c.1 1-.3 1.9-.9 2.6-.7.8-1.8 1.4-2.8 1.3-.1-1 .4-1.9.9-2.5.7-.8 1.9-1.3 2.8-1.4zM19.8 17.3c-.5 1.1-.8 1.7-1.4 2.7-.9 1.5-2.2 3.3-3.8 3.3-1.4 0-1.8-.9-3.7-.9s-2.3.9-3.6.9c-1.6 0-2.8-1.6-3.7-3-1.3-2-1.5-6 .3-8.2.9-1.6 2.3-2.6 3.7-2.6 1.5 0 2.4 1 3.6 1 1.2 0 1.9-1 3.6-1 1.2 0 2.6.7 3.5 1.9-3 1.7-2.6 6.1.7 6.9z"/></svg>'
+  windows:'<svg viewBox="0 0 24 24" fill="var(--win)"><path d="M3 5.4 10.4 4.4v7H3zM11.4 4.25 21 3v8.4h-9.6zM3 12.6h7.4v7L3 18.6zM11.4 12.6H21V21l-9.6-1.3z"/></svg>',
+  mac:'<svg viewBox="0 0 24 24" fill="var(--apple)"><path d="M16.4 1.6c.1 1-.3 1.9-.9 2.6-.7.8-1.8 1.4-2.8 1.3-.1-1 .4-1.9.9-2.5.7-.8 1.9-1.3 2.8-1.4zM19.8 17.3c-.5 1.1-.8 1.7-1.4 2.7-.9 1.5-2.2 3.3-3.8 3.3-1.4 0-1.8-.9-3.7-.9s-2.3.9-3.6.9c-1.6 0-2.8-1.6-3.7-3-1.3-2-1.5-6 .3-8.2.9-1.6 2.3-2.6 3.7-2.6 1.5 0 2.4 1 3.6 1 1.2 0 1.9-1 3.6-1 1.2 0 2.6.7 3.5 1.9-3 1.7-2.6 6.1.7 6.9z"/></svg>'
 };
 document.getElementById('ico-win').innerHTML = ICONS.windows;
 document.getElementById('ico-mac').innerHTML = ICONS.mac;
+const osName = { windows:'Windows', mac:'macOS', linux:'Linux' };
 
 /* ---------- Data ---------- */
-const CATEGORIES = [
-  "DAW Software", "MIDI Sequencers", "Plugins", "Virtual Instruments",
-  "Notation Software", "Mastering Software", "DJ Software", "Audio Editing"
-];
+const CATEGORIES = ["DAW Software","MIDI Sequencers","Plugins","Virtual Instruments","Notation Software","Mastering Software","DJ Software","Audio Editing"];
+const CAT_META = {
+  "DAW Software":{e:"🎚️",d:"Record, arrange and produce full songs."},
+  "MIDI Sequencers":{e:"🎹",d:"Program beats and melodies with MIDI."},
+  "Plugins":{e:"🧩",d:"Effects and add-ons for your studio."},
+  "Virtual Instruments":{e:"🎻",d:"Synths, pianos and sampled instruments."},
+  "Notation Software":{e:"🎼",d:"Write and print sheet music."},
+  "Mastering Software":{e:"💿",d:"Polish and finalize your final mix."},
+  "DJ Software":{e:"🎧",d:"Mix tracks and perform live sets."},
+  "Audio Editing":{e:"✂️",d:"Cut, clean and edit audio recordings."}
+};
 const VISIBLE_CATS = 6;
 
 const SOFTWARE = [
@@ -399,91 +432,143 @@ const SOFTWARE = [
     desc:"Industry-standard DAW used in professional studios for recording, editing, and mixing.",
     cats:["DAW Software","Mastering Software"], tags:["DAW Software","Audio Recording","Mixing"],
     os:["windows","mac"], ptype:"subscription", from:29.99, per:"/month", url:"https://www.avid.com/pro-tools" },
-
   { name:"Ableton Live", logo:"▦", bg:"#111", color:"#fff", rating:4.5, reviews:982,
     desc:"Powerful DAW designed for music creation, performance, and live production.",
     cats:["DAW Software","MIDI Sequencers"], tags:["DAW Software","Live Performance","MIDI"],
     os:["windows","mac"], ptype:"one-time", from:99, url:"https://www.ableton.com/en/live/" },
-
   { name:"Studio One", logo:"🎼", bg:"#f3f5f9", color:"#2f6bff", rating:4.4, reviews:679,
     desc:"Intuitive DAW with drag-and-drop workflow and powerful built-in tools.",
     cats:["DAW Software"], tags:["DAW Software","Recording","Mixing"],
     os:["windows","mac"], ptype:"one-time", from:99.95, url:"https://www.presonus.com/products/studio-one" },
-
   { name:"FL Studio", logo:"🍊", bg:"#fff3e6", color:"#e8732a", rating:4.3, reviews:1201,
     desc:"Popular DAW for beat making, composing, arranging, and production.",
     cats:["DAW Software","MIDI Sequencers"], tags:["DAW Software","Beat Making","MIDI"],
     os:["windows","mac"], ptype:"one-time", from:99, url:"https://www.image-line.com/fl-studio/" },
-
   { name:"Reaper", logo:"🎛️", bg:"#0f2a3c", color:"#7fd4ff", rating:4.7, reviews:864,
     desc:"Powerful, affordable studio that does almost everything. Generous trial and low one-time price.",
     cats:["DAW Software","Audio Editing"], tags:["DAW Software","Recording","Editing"],
     os:["windows","mac","linux"], ptype:"one-time", from:60, url:"https://www.reaper.fm/" },
-
   { name:"Cakewalk by BandLab", logo:"🎙️", bg:"#101826", color:"#5b87ff", editor:true, rating:4.4, reviews:980,
     desc:"A full studio for Windows, completely free. Record, mix, and master professional-sounding tracks.",
     cats:["DAW Software"], tags:["DAW Software","Recording","Free"],
     os:["windows"], ptype:"free", from:0, url:"https://www.bandlab.com/products/cakewalk" },
-
   { name:"GarageBand", logo:"🎸", bg:"#fde9d0", color:"#e8732a", rating:4.5, reviews:910,
     desc:"The friendliest place to start. Record, add instruments, and make a song with built-in lessons.",
     cats:["DAW Software"], tags:["DAW Software","Beginner","Recording"],
     os:["mac"], ptype:"free", from:0, url:"https://www.apple.com/mac/garageband/" },
-
   { name:"Logic Pro", logo:"🎹", bg:"#eef1f6", color:"#444", rating:4.7, reviews:1105,
     desc:"Apple's professional studio with tons of instruments and effects. A big step up from GarageBand.",
     cats:["DAW Software","MIDI Sequencers"], tags:["DAW Software","MIDI","Mixing"],
     os:["mac"], ptype:"one-time", from:199, url:"https://www.apple.com/logic-pro/" },
-
   { name:"Audacity", logo:"🎧", bg:"#e9f0ff", color:"#2f6bff", rating:4.5, reviews:2140,
     desc:"Simple, classic tool for recording and editing audio. Perfect for podcasts, voice, or cleanup.",
     cats:["Audio Editing"], tags:["Audio Editing","Recording","Free"],
     os:["windows","mac","linux"], ptype:"free", from:0, url:"https://www.audacityteam.org/" },
-
   { name:"iZotope RX Elements", logo:"🧰", bg:"#101826", color:"#8be0c0", rating:4.4, reviews:226,
     desc:"Clean up noisy recordings — remove hum, clicks, and background noise. Affordable audio repair.",
     cats:["Plugins","Mastering Software","Audio Editing"], tags:["Plugins","Editing","Mastering Software"],
     os:["windows","mac"], ptype:"one-time", from:129, url:"https://www.izotope.com/en/products/rx.html" },
-
   { name:"MuseScore", logo:"🎵", bg:"#eafaf0", color:"#1f9d57", rating:4.6, reviews:1520,
     desc:"Write and print sheet music. Hear it played back as you go. Excellent for composers and students.",
     cats:["Notation Software"], tags:["Notation Software","Free","Beginner"],
     os:["windows","mac","linux"], ptype:"free", from:0, url:"https://musescore.org/" },
-
   { name:"Sibelius First", logo:"📝", bg:"#fff0f0", color:"#d05a5a", rating:4.0, reviews:412,
     desc:"Beginner-friendly version of the well-known sheet-music writing software. Free to start.",
     cats:["Notation Software"], tags:["Notation Software"],
     os:["windows","mac"], ptype:"subscription", from:9.99, per:"/month", url:"https://www.avid.com/sibelius" },
-
   { name:"Serato DJ Lite", logo:"🎚️", bg:"#101826", color:"#6fe3c0", rating:4.2, reviews:305,
     desc:"Mix and DJ your music collection for free. Beat-match songs and add effects for parties.",
     cats:["DJ Software"], tags:["DJ Software","Free","Beginner"],
     os:["windows","mac"], ptype:"free", from:0, url:"https://serato.com/dj/lite" },
-
   { name:"VirtualDJ", logo:"💿", bg:"#e9f0ff", color:"#2f6bff", rating:4.1, reviews:254,
     desc:"Popular DJ software that's free for home use. Mix songs, videos, and karaoke easily.",
     cats:["DJ Software"], tags:["DJ Software","Free"],
     os:["windows","mac"], ptype:"subscription", from:19, per:"/month", url:"https://www.virtualdj.com/" },
-
   { name:"Soundtrap", logo:"🌐", bg:"#eef1f6", color:"#2f6bff", rating:4.1, reviews:328,
     desc:"Online studio that works on any computer. Great for collaborating and making music together.",
     cats:["DAW Software"], tags:["DAW Software","Online","Beginner"],
     os:["windows","mac","linux"], ptype:"subscription", from:9.99, per:"/month", url:"https://www.soundtrap.com/" },
-
   { name:"BandLab", logo:"🎶", bg:"#101826", color:"#ff5b6e", rating:4.2, reviews:540,
     desc:"Make music right in your web browser or phone — no download needed. Easy loops to start fast.",
     cats:["DAW Software"], tags:["DAW Software","Online","Free"],
     os:["windows","mac","linux"], ptype:"free", from:0, url:"https://www.bandlab.com/" }
 ];
 
-/* ---------- State ---------- */
-const state = {
-  q: "", cats: new Set(), ptypes: new Set(), os: new Set(),
-  maxPrice: 1000, minRating: false, sort: "relevance"
-};
+const GUIDES = [
+  { id:"choose-first-daw", emoji:"🎚️", title:"How to choose your first DAW", read:"4 min read", body:`
+    <p>A DAW (Digital Audio Workstation) is the main program you use to record and build a song. With so many out there, picking your first one can feel overwhelming. Here's how to make it simple.</p>
+    <h2>1. Start with your goal</h2>
+    <p>Recording a guitar or voice? Look at <b>Audacity</b> (free) or <b>Cakewalk</b> (free on Windows). Making beats or electronic music? <b>FL Studio</b> and <b>Ableton Live</b> are favorites. Just want the easiest possible start on a Mac? <b>GarageBand</b> is free and friendly.</p>
+    <h2>2. Don't pay until you're sure</h2>
+    <p>Almost every paid DAW has a free trial, and several great ones are free forever. Try one or two before spending anything.</p>
+    <h2>3. Pick one and stick with it</h2>
+    <p>They all do similar things. The "best" DAW is the one you actually learn. Switching constantly slows you down more than any feature difference.</p>
+    <div class="callout">💡 Tip: On Windows and on a budget? Start with <b>Cakewalk by BandLab</b> — it's a full studio and completely free.</div>` },
+  { id:"free-vs-paid", emoji:"💸", title:"Free vs. paid: what you actually need", read:"3 min read", body:`
+    <p>You do <i>not</i> need to spend money to start making music. Here's how to think about it.</p>
+    <h2>What free software gets you</h2>
+    <p>Free tools like Audacity, Cakewalk, MuseScore, and BandLab cover recording, editing, beat-making, and sheet music. For most beginners, that's everything you need for a long time.</p>
+    <h2>When paying is worth it</h2>
+    <ul>
+      <li><b>You've outgrown the free option</b> and hit a specific limit.</li>
+      <li><b>You want a particular sound or instrument</b> only a paid tool offers.</li>
+      <li><b>You value convenience</b> — paid tools often have smoother workflows and support.</li>
+    </ul>
+    <div class="callout">💡 Rule of thumb: start free, upgrade only when something is genuinely getting in your way.</div>` },
+  { id:"record-vocals", emoji:"🎙️", title:"Recording vocals at home: a simple setup", read:"5 min read", body:`
+    <p>You can get a clean vocal recording at home without a fancy studio. Here's the short version.</p>
+    <h2>The basics you need</h2>
+    <ul>
+      <li>A microphone (a USB mic is the easiest start).</li>
+      <li>A quiet room — soft furnishings help reduce echo.</li>
+      <li>Recording software, such as Audacity or any DAW.</li>
+    </ul>
+    <h2>Get a clean take</h2>
+    <p>Record a test, then check the level isn't too loud (no red peaks). Stay a fist's distance from the mic, and re-record rather than trying to fix a bad take later.</p>
+    <h2>Clean it up</h2>
+    <p>Tools like iZotope RX can remove hum and background noise afterwards, but a quiet room and good levels do most of the work.</p>` },
+  { id:"windows-starter", emoji:"🪟", title:"Windows home-studio starter checklist", read:"3 min read", body:`
+    <p>Setting up to make music on a Windows PC? Here's a no-nonsense checklist.</p>
+    <h2>Software</h2>
+    <ul>
+      <li><b>A DAW:</b> Cakewalk by BandLab (free) or Reaper (cheap) are great starting points.</li>
+      <li><b>An audio editor:</b> Audacity for quick edits and cleanup.</li>
+      <li><b>Optional notation:</b> MuseScore if you read or write sheet music.</li>
+    </ul>
+    <h2>Good to have</h2>
+    <ul>
+      <li>Headphones (closed-back help when recording).</li>
+      <li>A USB microphone or a small audio interface.</li>
+      <li>The latest audio drivers for low latency (look up "ASIO4ALL" if your interface has no driver).</li>
+    </ul>
+    <div class="callout">💡 Use the filters on the home page — tick <b>Windows</b> under Operating System to see only programs that run on your PC.</div>` }
+];
 
-/* ---------- Build category filters ---------- */
+const POSTS = [
+  { id:"5-free-programs", emoji:"🎉", title:"5 free programs to start making music today", read:"Getting started", body:`
+    <p>No budget? No problem. These five free programs can take you from zero to your first song.</p>
+    <h2>1. Cakewalk by BandLab</h2><p>A complete recording studio for Windows — and totally free.</p>
+    <h2>2. Audacity</h2><p>The simplest way to record and edit audio. Perfect for voice and podcasts.</p>
+    <h2>3. GarageBand</h2><p>On a Mac? It's free, friendly, and comes with built-in lessons.</p>
+    <h2>4. BandLab</h2><p>Make music in your browser — nothing to install.</p>
+    <h2>5. MuseScore</h2><p>Write and hear sheet music, great for students and composers.</p>` },
+  { id:"what-is-a-daw", emoji:"❓", title:"What is a DAW, in plain English", read:"Basics", body:`
+    <p>"DAW" stands for Digital Audio Workstation. That's a fancy way of saying: the program where you record, arrange, and mix your music.</p>
+    <p>Think of it like a word processor, but for sound. Instead of paragraphs, you arrange clips of audio and instruments on a timeline, then press play to hear it all together.</p>
+    <p>Examples include GarageBand, FL Studio, Ableton Live, and Reaper. They all share the same core idea — the differences are mostly in style and workflow.</p>
+    <div class="callout">New to this? Read our guide <b>"How to choose your first DAW"</b> for a gentle starting point.</div>` },
+  { id:"expensive-gear", emoji:"💡", title:"Do you need expensive gear to sound good?", read:"Opinion", body:`
+    <p>Short answer: no. The biggest improvements in your sound come from your room, your playing or singing, and knowing your software — not from spending more money.</p>
+    <p>A modest microphone in a quiet room, recorded carefully with free software, will beat expensive gear used badly every time.</p>
+    <p>Spend your early effort on learning one program well. Upgrade gear later, once you know exactly what's holding you back.</p>` }
+];
+
+/* ---------- State ---------- */
+const state = { q:"", cats:new Set(), ptypes:new Set(), os:new Set(), maxPrice:1000, minRating:false, sort:"relevance", compare:new Set() };
+
+/* ---------- Category filters ---------- */
 const catList = document.getElementById('category-list');
+let catMoreOpen = false;
 function renderCategoryFilters() {
   catList.innerHTML = "";
   const shown = catMoreOpen ? CATEGORIES : CATEGORIES.slice(0, VISIBLE_CATS);
@@ -492,47 +577,41 @@ function renderCategoryFilters() {
     label.className = 'opt';
     label.innerHTML = `<input type="checkbox" value="${c}" ${state.cats.has(c)?'checked':''}> ${c}`;
     label.querySelector('input').addEventListener('change', e => {
-      e.target.checked ? state.cats.add(c) : state.cats.delete(c);
-      update();
+      e.target.checked ? state.cats.add(c) : state.cats.delete(c); update();
     });
     catList.appendChild(label);
   });
 }
-let catMoreOpen = false;
-document.getElementById('cat-more').addEventListener('click', (e) => {
+document.getElementById('cat-more').addEventListener('click', e => {
   catMoreOpen = !catMoreOpen;
   e.target.textContent = catMoreOpen ? 'Show less ‹' : 'Show more ›';
   renderCategoryFilters();
 });
 
-/* ---------- Stars ---------- */
+/* ---------- Helpers ---------- */
 function starsHTML(r) {
-  const pct = (r / 5) * 100;
+  const pct = (r/5)*100;
   return `<span class="stars"><span class="bg">★★★★★</span><span class="fg" style="width:${pct}%">★★★★★</span></span>`;
 }
 function osHTML(list) {
-  return list.map(o => o === 'linux'
+  return list.map(o => o==='linux'
     ? '<span class="os-ico" title="Linux">🐧</span>'
-    : `<span class="os-ico" title="${o}">${ICONS[o]}</span>`).join('');
+    : `<span class="os-ico" title="${osName[o]}">${ICONS[o]}</span>`).join('');
 }
 function priceLabel(s) {
-  if (s.ptype === 'free') return `<div class="ptype">Free</div><div class="pfrom">$0</div>`;
-  const typeTxt = s.ptype === 'subscription' ? 'Subscription' : 'One-time purchase';
+  if (s.ptype==='free') return `<div class="ptype">Free</div><div class="pfrom">$0</div>`;
+  const typeTxt = s.ptype==='subscription' ? 'Subscription' : 'One-time purchase';
   const per = s.per ? `<small>${s.per}</small>` : '';
   return `<div class="ptype">${typeTxt}</div><div class="pfrom">from $${s.from}${per}</div>`;
 }
+function priceText(s){ return s.ptype==='free' ? 'Free' : `$${s.from}${s.per||''} (${s.ptype==='subscription'?'subscription':'one-time'})`; }
 
-/* ---------- Render results ---------- */
-const resultsEl = document.getElementById('results');
-const emptyEl = document.getElementById('empty');
-const countEl = document.getElementById('count');
-
+/* ---------- Finder ---------- */
 const STOPWORDS = new Set(['best','for','the','a','an','to','with','my','of','and','top','good','software','app','apps','program','programs','music']);
 function matches(s) {
   if (state.q) {
-    const hay = (s.name + ' ' + s.desc + ' ' + s.cats.join(' ') + ' ' + s.tags.join(' ')).toLowerCase();
+    const hay = (s.name+' '+s.desc+' '+s.cats.join(' ')+' '+s.tags.join(' ')).toLowerCase();
     const tokens = state.q.split(/\s+/).filter(t => t && !STOPWORDS.has(t));
-    // If the query is only filler words, fall back to the raw phrase.
     const terms = tokens.length ? tokens : [state.q];
     if (!terms.some(t => hay.includes(t))) return false;
   }
@@ -541,28 +620,25 @@ function matches(s) {
   if (state.minRating && s.rating < 4.5) return false;
   if (s.from > state.maxPrice) return false;
   if (state.ptypes.size) {
-    const ok = [...state.ptypes].some(p =>
-      p === 'free' ? s.ptype === 'free'
-      : p === 'paid' ? s.ptype !== 'free'
-      : s.ptype === p);
+    const ok = [...state.ptypes].some(p => p==='free' ? s.ptype==='free' : p==='paid' ? s.ptype!=='free' : s.ptype===p);
     if (!ok) return false;
   }
   return true;
 }
-
 function sortList(list) {
   const l = [...list];
-  if (state.sort === 'rating') l.sort((a,b) => b.rating - a.rating);
-  else if (state.sort === 'name') l.sort((a,b) => a.name.localeCompare(b.name));
-  else if (state.sort === 'price') l.sort((a,b) => a.from - b.from);
+  if (state.sort==='rating') l.sort((a,b)=>b.rating-a.rating);
+  else if (state.sort==='name') l.sort((a,b)=>a.name.localeCompare(b.name));
+  else if (state.sort==='price') l.sort((a,b)=>a.from-b.from);
   return l;
 }
-
+const resultsEl = document.getElementById('results');
+const emptyEl = document.getElementById('empty');
+const countEl = document.getElementById('count');
 function update() {
   renderCategoryFilters();
   const list = sortList(SOFTWARE.filter(matches));
-  countEl.innerHTML = `<b>${list.length}</b> result${list.length===1?'':'s'}` +
-    (state.q ? ` for &ldquo;${state.q}&rdquo;` : '');
+  countEl.innerHTML = `<b>${list.length}</b> result${list.length===1?'':'s'}` + (state.q ? ` for &ldquo;${state.q}&rdquo;` : '');
   emptyEl.style.display = list.length ? 'none' : 'block';
   resultsEl.innerHTML = list.map(s => `
     <div class="card">
@@ -572,35 +648,161 @@ function update() {
           <h3>${s.name}</h3>
           ${s.editor ? '<span class="badge">Editor&#39;s Choice</span>' : ''}
         </div>
-        <div class="rating">
-          ${starsHTML(s.rating)}
-          <span class="score">${s.rating.toFixed(1)}</span>
-          <span class="reviews">(${s.reviews.toLocaleString()})</span>
-        </div>
+        <div class="rating">${starsHTML(s.rating)}<span class="score">${s.rating.toFixed(1)}</span><span class="reviews">(${s.reviews.toLocaleString()})</span></div>
         <p class="desc">${s.desc}</p>
-        <div class="tags">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        <div class="tags">${s.tags.map(t=>`<span class="tag" data-cat="${s.cats[0]}">${t}</span>`).join('')}</div>
       </div>
       <div class="right">
         <div class="right-inner">
           <div class="os-list">${osHTML(s.os)}</div>
           <div class="price">${priceLabel(s)}</div>
           <a class="visit" href="${s.url}" target="_blank" rel="noopener">Visit Website
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
-          </a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
         </div>
-        <label class="compare"><input type="checkbox"> Compare</label>
+        <label class="compare"><input type="checkbox" class="cmp-cb" data-name="${s.name}" ${state.compare.has(s.name)?'checked':''}> Compare</label>
       </div>
     </div>`).join('');
+
+  resultsEl.querySelectorAll('.cmp-cb').forEach(cb => cb.addEventListener('change', e => toggleCompare(e.target.dataset.name, e.target)));
+  resultsEl.querySelectorAll('.tag').forEach(t => t.addEventListener('click', () => {
+    state.cats = new Set([t.dataset.cat]); update();
+    document.querySelector('.container').scrollIntoView({behavior:'smooth'});
+  }));
 }
 
-/* ---------- Wire up controls ---------- */
+/* ---------- Compare ---------- */
+function toggleCompare(name, cb) {
+  if (state.compare.has(name)) state.compare.delete(name);
+  else {
+    if (state.compare.size >= 4) { alert('You can compare up to 4 at a time.'); if (cb) cb.checked = false; return; }
+    state.compare.add(name);
+  }
+  renderCompareBar();
+}
+const compareBar = document.getElementById('compare-bar');
+const cbItems = document.getElementById('cb-items');
+function renderCompareBar() {
+  if (!state.compare.size) { compareBar.classList.add('hidden'); return; }
+  compareBar.classList.remove('hidden');
+  cbItems.innerHTML = `<b>Compare (${state.compare.size}):</b> ` + [...state.compare].map(n =>
+    `<span class="cb-chip">${n}<button data-name="${n}">×</button></span>`).join('');
+  cbItems.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    state.compare.delete(b.dataset.name); renderCompareBar();
+    document.querySelectorAll(`.cmp-cb[data-name="${CSS.escape(b.dataset.name)}"]`).forEach(c => c.checked = false);
+    if (location.hash === '#/compare') renderCompare();
+  }));
+}
+document.getElementById('cb-clear').addEventListener('click', () => {
+  state.compare.clear(); renderCompareBar();
+  document.querySelectorAll('.cmp-cb').forEach(c => c.checked = false);
+  if (location.hash === '#/compare') renderCompare();
+});
+document.getElementById('cb-go').addEventListener('click', () => { location.hash = '#/compare'; });
+
+function renderCompare() {
+  const items = SOFTWARE.filter(s => state.compare.has(s.name));
+  const el = document.getElementById('compare-content');
+  if (!items.length) { el.innerHTML = `<div class="empty">No software selected yet. Go to the <a data-route="#/" style="color:var(--accent);cursor:pointer">finder</a> and tick “Compare” on a few programs.</div>`; bindRoutes(el); return; }
+  const rows = [
+    ['', items.map(s => `<div class="cmp-head"><span class="logo-sm" style="background:${s.bg};color:${s.color}">${s.logo}</span><b>${s.name}</b></div>`)],
+    ['Rating', items.map(s => `${starsHTML(s.rating)} ${s.rating.toFixed(1)} <span style="color:var(--faint)">(${s.reviews.toLocaleString()})</span>`)],
+    ['Price', items.map(s => priceText(s))],
+    ['Category', items.map(s => s.cats.join(', '))],
+    ['Works on', items.map(s => s.os.map(o=>osName[o]).join(', '))],
+    ['What it is', items.map(s => s.desc)],
+    ['', items.map(s => `<a class="visit" href="${s.url}" target="_blank" rel="noopener">Visit Website</a>`)]
+  ];
+  el.innerHTML = `<div style="overflow-x:auto"><table class="cmp-table"><tbody>` +
+    rows.map(([label, cells]) => `<tr><td>${label}</td>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('') +
+    `</tbody></table></div>`;
+}
+
+/* ---------- Categories page ---------- */
+function renderCategories() {
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = CATEGORIES.map(c => {
+    const n = SOFTWARE.filter(s => s.cats.includes(c)).length;
+    return `<div class="cat-card" data-cat="${c}">
+      <div class="emoji">${CAT_META[c].e}</div>
+      <h3>${c}</h3><p>${CAT_META[c].d}</p>
+      <div class="n">${n} program${n===1?'':'s'} ›</div></div>`;
+  }).join('');
+  grid.querySelectorAll('.cat-card').forEach(card => card.addEventListener('click', () => {
+    state.cats = new Set([card.dataset.cat]);
+    catMoreOpen = CATEGORIES.indexOf(card.dataset.cat) >= VISIBLE_CATS;
+    location.hash = '#/';
+    update();
+  }));
+}
+
+/* ---------- Article lists ---------- */
+function renderGuides() {
+  document.getElementById('guides-grid').innerHTML = GUIDES.map(g =>
+    `<div class="post-card" data-route="#/guides/${g.id}"><div class="banner">${g.emoji}</div>
+     <div class="body"><div class="meta">${g.read}</div><h3>${g.title}</h3>
+     <p>${g.body.replace(/<[^>]+>/g,' ').trim().slice(0,90)}…</p></div></div>`).join('');
+  bindRoutes(document.getElementById('guides-grid'));
+}
+function renderBlog() {
+  document.getElementById('blog-grid').innerHTML = POSTS.map(p =>
+    `<div class="post-card" data-route="#/blog/${p.id}"><div class="banner">${p.emoji}</div>
+     <div class="body"><div class="meta">${p.read}</div><h3>${p.title}</h3>
+     <p>${p.body.replace(/<[^>]+>/g,' ').trim().slice(0,90)}…</p></div></div>`).join('');
+  bindRoutes(document.getElementById('blog-grid'));
+}
+function renderGuide(id) {
+  const g = GUIDES.find(x => x.id===id); if (!g) { location.hash='#/guides'; return; }
+  document.getElementById('guide-crumb').textContent = g.title;
+  document.getElementById('guide-article').innerHTML = `<div class="banner">${g.emoji}</div><h1>${g.title}</h1><div class="meta">${g.read}</div>${g.body}`;
+}
+function renderPost(id) {
+  const p = POSTS.find(x => x.id===id); if (!p) { location.hash='#/blog'; return; }
+  document.getElementById('post-crumb').textContent = p.title;
+  document.getElementById('post-article').innerHTML = `<div class="banner">${p.emoji}</div><h1>${p.title}</h1><div class="meta">${p.read}</div>${p.body}`;
+}
+
+/* ---------- Router ---------- */
+const VIEWS = ['view-home','view-categories','view-guides','view-guide','view-blog','view-post','view-about','view-compare'];
+function showView(id) { VIEWS.forEach(v => document.getElementById(v).classList.toggle('hidden', v!==id)); }
+function setActiveNav(hash) {
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const r = a.dataset.route;
+    a.classList.toggle('active', hash===r || (r!=='#/' && hash.startsWith(r)));
+  });
+}
+function router() {
+  const hash = location.hash || '#/';
+  setActiveNav(hash);
+  closeAccount();
+  if (hash === '#/' || hash === '') showView('view-home');
+  else if (hash === '#/categories') { renderCategories(); showView('view-categories'); }
+  else if (hash === '#/guides') { renderGuides(); showView('view-guides'); }
+  else if (hash.startsWith('#/guides/')) { renderGuide(hash.split('/')[2]); showView('view-guide'); }
+  else if (hash === '#/blog') { renderBlog(); showView('view-blog'); }
+  else if (hash.startsWith('#/blog/')) { renderPost(hash.split('/')[2]); showView('view-post'); }
+  else if (hash === '#/about') { showView('view-about'); }
+  else if (hash === '#/compare') { renderCompare(); showView('view-compare'); }
+  else showView('view-home');
+  window.scrollTo({ top:0 });
+}
+window.addEventListener('hashchange', router);
+
+/* ---------- Route binding ---------- */
+function bindRoutes(scope) {
+  scope.querySelectorAll('[data-route]').forEach(el => {
+    if (el.__bound) return; el.__bound = true;
+    el.addEventListener('click', () => { location.hash = el.dataset.route; });
+  });
+}
+bindRoutes(document);
+
+/* ---------- Controls ---------- */
 const searchEl = document.getElementById('search');
 searchEl.addEventListener('input', () => { state.q = searchEl.value.trim().toLowerCase(); update(); });
 document.getElementById('clear-search').addEventListener('click', () => { searchEl.value=''; state.q=''; update(); searchEl.focus(); });
 document.querySelectorAll('.pill').forEach(p => p.addEventListener('click', () => {
   searchEl.value = p.dataset.q; state.q = p.dataset.q.toLowerCase(); update();
 }));
-
 document.querySelectorAll('.price-type').forEach(cb => cb.addEventListener('change', e => {
   e.target.checked ? state.ptypes.add(e.target.value) : state.ptypes.delete(e.target.value); update();
 }));
@@ -609,7 +811,6 @@ document.querySelectorAll('.os-filter').forEach(cb => cb.addEventListener('chang
 }));
 document.getElementById('rating-filter').addEventListener('change', e => { state.minRating = e.target.checked; update(); });
 document.getElementById('sort').addEventListener('change', e => { state.sort = e.target.value; update(); });
-
 const range = document.getElementById('price-range');
 const priceVal = document.getElementById('price-val');
 range.addEventListener('input', () => {
@@ -617,26 +818,45 @@ range.addEventListener('input', () => {
   priceVal.textContent = state.maxPrice >= 1000 ? 'Up to $1000+' : 'Up to $' + state.maxPrice;
   update();
 });
-
 document.getElementById('clear-all').addEventListener('click', () => {
-  state.cats.clear(); state.ptypes.clear(); state.os.clear();
-  state.maxPrice = 1000; state.minRating = false;
-  document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c => c.checked = false);
+  state.cats.clear(); state.ptypes.clear(); state.os.clear(); state.maxPrice=1000; state.minRating=false;
+  document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c => c.checked=false);
   range.value = 1000; priceVal.textContent = 'Up to $1000+';
   update();
 });
 
-/* ---------- Theme toggle ---------- */
+/* ---------- Account menu ---------- */
+const accountMenu = document.getElementById('account-menu');
+function closeAccount(){ accountMenu.classList.add('hidden'); }
+document.getElementById('account-btn').addEventListener('click', e => { e.stopPropagation(); accountMenu.classList.toggle('hidden'); });
+document.addEventListener('click', e => { if (!accountMenu.contains(e.target) && e.target.id!=='account-btn') closeAccount(); });
+document.getElementById('am-clear-theme').addEventListener('click', () => { toggleTheme(); closeAccount(); });
+bindRoutes(accountMenu);
+
+/* ---------- Theme (remembered) ---------- */
 const root = document.documentElement;
-document.getElementById('theme-toggle').addEventListener('click', () => {
-  root.classList.toggle('dark');
+function applyThemeIcon() {
   const dark = root.classList.contains('dark');
   document.getElementById('theme-ico').innerHTML = dark
     ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
     : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
-});
+}
+function toggleTheme() {
+  root.classList.toggle('dark');
+  try { localStorage.setItem('musictip-theme', root.classList.contains('dark') ? 'dark' : 'light'); } catch(e){}
+  applyThemeIcon();
+}
+document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+try { if (localStorage.getItem('musictip-theme') === 'dark') root.classList.add('dark'); } catch(e){}
+applyThemeIcon();
 
+/* ---------- About stats ---------- */
+document.getElementById('stat-count').textContent = SOFTWARE.length;
+document.getElementById('stat-free').textContent = SOFTWARE.filter(s => s.ptype==='free').length;
+
+/* ---------- Go ---------- */
 update();
+router();
 </script>
 </body>
 </html>
